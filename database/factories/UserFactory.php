@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Hash;
 use Faker\Generator as Faker;
 
 /*
@@ -17,7 +18,7 @@ $factory->define(App\User::class, function (Faker $faker) {
     return [
         'name' => 'matthew',//$faker->name,
         'email' => 'mateo.vazquez@purpleit.com.mx', //$faker->unique()->safeEmail,
-        'password' => 'Matthew19', //'$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
+        'password' => Hash::make('Matthew19'), //'$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
         'remember_token' => str_random(10),
     ];
 });
