@@ -24,6 +24,7 @@ class Menu extends Model
         'created_at', 'updated_at',
     ];
 
+
     public function getChildren($data, $line)
     {
         $children = [];
