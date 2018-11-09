@@ -21,7 +21,10 @@
 
     <!------------------------------ Scripts ---------------------------------->
     <!-- jQuery -->    
-    <script src="{{ URL::asset('js/jquery-3.3.1.min.js') }}"></script>       
+    <script src="{{ URL::asset('js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ URL::asset('js/jquery.validate.min.js') }}"></script>
+    <script src="{{ URL::asset('js/additional-methods.min.js') }}"></script>
+    <script src="{{ URL::asset('js/popper.min.js') }}"></script>
     <script src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ URL::asset('js/datatables.min.js') }}"></script>
     <!-- style de menu -->

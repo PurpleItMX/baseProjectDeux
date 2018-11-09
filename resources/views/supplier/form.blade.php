@@ -1,13 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <script src="{{ URL::asset('js/supply/form.js') }}"></script>
-
-
-<div class="float-left">Float left on all viewport sizes</div><br>
-<div class="float-right">Float right on all viewport sizes</div><br>
-<div class="float-none">Don't float on all viewport sizes</div>
-  <center>
-    <h5>Insumos</h5>
+  <h5>Insumos</h5>
   </center>
   <div class="jumbotron jumbotron-fluid">
   <div class="container">

@@ -5,6 +5,10 @@ $(document).ready(function(){
             "url": "js/Spanish.json"
         },
 	});
+
+	$('.alert').alert();
+
+	$('[data-toggle="tooltip"]').tooltip();
 });
 
 function goBack() {

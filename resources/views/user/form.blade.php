@@ -12,20 +12,10 @@
           <div class="form-group col-md-6">
             <label for="name">{{ __('Nombre') }}</label>
             <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" required autofocus value={{ $user ? $user->name : "" }}>
-              @if ($errors->has('name'))
-                  <span class="invalid-feedback" role="alert">
-                      <strong>{{ $errors->first('name') }}</strong>
-                  </span>
-              @endif
           </div>
           <div class="form-group col-md-6">
             <label for="email">{{ __('Correo') }}</label>
             <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" required value={{ $user ? $user->email : "" }}>
-              @if ($errors->has('email'))
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $errors->first('email') }}</strong>
-                </span>
-              @endif
           </div>
 
         </div>
@@ -34,11 +24,6 @@
           <div class="form-group col-md-6">
             <label for="password">{{ __('Contraseña') }}</label>
             <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-              @if ($errors->has('password'))
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $errors->first('password') }}</strong>
-                </span>
-              @endif
           </div>
           <div class="form-group col-md-6">
             <label for="password-confirm">{{ __('Confirmar Contraseña') }}</label>

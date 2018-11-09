@@ -82,7 +82,7 @@ class WarehouseController extends Controller
      */
     public function delete($id)
     {
-    	User::deleteById($id);
+    	Warehouse::deleteById($id);
         return redirect()->action('WarehouseController@index');
     }
 }

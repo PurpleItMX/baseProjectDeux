@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\QueryException;
 use App\User;
 
 class UserController extends Controller
@@ -26,7 +27,9 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('user.index')->with('users',$users);
+        return view('user.index')
+        ->with('users',$users)
+        ->with('error', '');
     }
 
      /**
@@ -58,20 +61,26 @@ class UserController extends Controller
      */
     public function save(Request $request)
     {
-        $id = $request['id_user'];
-        if($id == NULL){
-            $user = new User();
-            $user->name = $request['name'];
-            $user->email = $request['email'];
-            $user->password = Hash::make($request['password']);
-            $user->remember_token = str_random(10);
-        }else{
-            $user  = User::findOrFail($id);
-            $user->name = $request['name'];
-            $user->email = $request['email'];
-        }
-            $user->save();
-        return redirect()->action('UserController@index');
+        try {
+            $id = $request['id_user'];
+            if($id == NULL){
+                $user = new User();
+                $user->name = $request['name'];
+                $user->email = $request['email'];
+                $user->password = Hash::make($request['password']);
+                $user->remember_token = str_random(10);
+            }else{
+                $user  = User::findOrFail($id);
+                $user->name = $request['name'];
+                $user->email = $request['email'];
+            }
+                $user->save();
+           return redirect()->action('UserController@index');
+       }catch (QueryException $e){
+            $error = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return redirect()->action('UserController@index')
+            ->with('error', $error);
+       }
     }
 
     /**
@@ -81,8 +90,9 @@ class UserController extends Controller
      */
     public function delete($id)
     {
-        $users = User::all();
-        return view('user.index')->with('users',$users);
+        $user = User::find($id);    
+        $user->delete();
+        return redirect()->action('UserController@index');
     }
 
     /**

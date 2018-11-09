@@ -9,7 +9,10 @@
 				<th>{{ __('Id:') }}</th>
 				<th>{{ __('Nombre:') }}</th>
 				<th>{{ __('Correo:') }}</th>
-				<th>{{ __('Acciones:') }}</th>
+				<th>{{ __('Acciones:') }} <a type="button" class="btn btn-primary btn-sm" href="{{ url('/user')}}" data-toggle="tooltip" data-placement="bottom" title="Nuevo Usuario">
+							<span class="fa fa-file" aria-hidden="true"></span>
+						</a>
+				</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -19,15 +22,11 @@
 					<td>{{ $user->name }}</td>
 					<td>{{ $user->email }}</td>
 					<td>
-						<a type="button" class="btn btn-secondary btn-sm" href="{{ url('/user/'.$user->id)}}">
-							<span class="glyphicon glyphicon-search" aria-hidden="true">
-								Editar
-							</span>
+						<a type="button" class="btn btn-secondary btn-sm" href="{{ url('/user/'.$user->id)}}" data-toggle="tooltip" data-placement="bottom" title="Editar">
+							<span class="fa fa-pencil" aria-hidden="true"></span>
 						</a>
-						<a type="button" class="btn btn-danger btn-sm" href="{{ url('/user/delete/'.$user->id)}}">
-							<span class="glyphicon glyphicon-search" aria-hidden="true">
-								Eliminar
-							</span>
+						<a type="button" class="btn btn-danger btn-sm" href="{{ url('/user/delete/'.$user->id)}}" data-toggle="tooltip" data-placement="bottom" title="Eliminar">
+							<span class="fa fa-trash" aria-hidden="true"></span>
 						</a>
 					</td>
 				</tr>
