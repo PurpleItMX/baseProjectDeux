@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
-        view()->composer('welcome', function($view) {
+        view()->composer('layouts.app', function($view) {
             $view->with('menus', Menu::menus());
         });
     }

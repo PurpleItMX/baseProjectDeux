@@ -19,7 +19,7 @@
 					<td>{{ $user->name }}</td>
 					<td>{{ $user->email }}</td>
 					<td>
-						<a type="button" class="btn btn-secondary btn-sm" href="{{ url('/user/edit/'.$user->id)}}">
+						<a type="button" class="btn btn-secondary btn-sm" href="{{ url('/user/'.$user->id)}}">
 							<span class="glyphicon glyphicon-search" aria-hidden="true">
 								Editar
 							</span>

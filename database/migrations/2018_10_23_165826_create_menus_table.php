@@ -19,6 +19,7 @@ class CreateMenusTable extends Migration
             $table->string('name');
             $table->string('url');
             $table->string('icono')->nullable();
+            $table->tinyInteger('menu_order');
             $table->tinyInteger('estatus')->default(1);
             $table->timestamps();
         });

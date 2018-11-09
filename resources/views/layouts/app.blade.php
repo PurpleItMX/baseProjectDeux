@@ -37,9 +37,9 @@
               <li class="nav-item">
                 <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
               </li>
-              <li class="nav-item d-none d-sm-inline-block">
+              <!--<li class="nav-item d-none d-sm-inline-block">
                 <a href="{{ url('/home') }}" class="nav-link">Home</a>
-              </li>
+              </li>-->
             </ul>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
@@ -77,37 +77,12 @@
                 </div>
                   <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                      <!-- Add icons to the links using the .nav-icon class
-                           with font-awesome or any other icon font library -->
-                      <li class="nav-item has-treeview menu-open">
-                        <a href="#" class="nav-link active">
-                          <i class="nav-icon fa fa-dashboard"></i>
-                          <p>
-                            Dashboard
-                            <i class="right fa fa-angle-left"></i>
-                          </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                          <li class="nav-item">
-                            <a href="./index.html" class="nav-link active">
-                              <i class="fa fa-circle-o nav-icon"></i>
-                              <p>Dashboard v1</p>
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a href="./index2.html" class="nav-link">
-                              <i class="fa fa-circle-o nav-icon"></i>
-                              <p>Dashboard v2</p>
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a href="./index3.html" class="nav-link">
-                              <i class="fa fa-circle-o nav-icon"></i>
-                              <p>Dashboard v3</p>
-                            </a>
-                          </li>
-                        </ul>
-                      </li>
+                        @foreach ($menus as $key => $item)
+                            @if ($item['id_parent'] != 0)
+                                @break
+                            @endif
+                            @include('menu-item', ['item' => $item])
+                        @endforeach
                     </ul>
                   </nav>
             </div>

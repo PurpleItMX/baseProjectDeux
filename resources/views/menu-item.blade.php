@@ -1,18 +1,37 @@
 @if ($item['submenu'] == [])
-    <li>
-        <a href="{{ url($item['name']) }}">{{ $item['name'] }} </a>
+    <li class="nav-item">
+            <a href="{{ URL::asset('') }}{{ $item[url] }}" class="nav-link">
+            <!---cabiar por el icono de la bd---->
+            <i class="nav-icon fa fa-th"></i>
+            <p>
+                {{ $item['name'] }}
+            </p>
+        </a>
     </li>
 @else
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $item['name'] }} <span class="caret"></span></a>
-        <ul class="dropdown-menu sub-menu">
+    <li class="nav-item has-treeview">
+        <a href="{{ URL::asset($item['url']) }}" class="nav-link">
+            <!---cabiar por el icono de la bd---->
+            <i class="nav-icon {{ $item['icono'] }}"></i>
+            <p>
+                {{ $item['name'] }}
+                <i class="right fa fa-angle-left"></i>
+                <!--<span class="right badge badge-danger">New</span>-->
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
             @foreach ($item['submenu'] as $submenu)
                 @if ($submenu['submenu'] == [])
-                    <li><a href="{{ url('menu',['id' => $submenu['id_menu'], 'slug' => $submenu['url']]) }}">{{$submenu['name'] }} </a></li>
+                <li class="nav-item">
+                    <a href="{{ URL::asset($submenu['url']) }}" class="nav-link">
+                      <i class="nav-icon {{ $submenu['icono'] }}"></i>
+                      <p>{{ $submenu['name'] }}</p>
+                    </a>
+                </li>
                 @else
                     @include('menu-item', [ 'item' => $submenu ])
                 @endif
-            @endforeach
+            @endforeach      
         </ul>
-    </li>
+    </li> 
 @endif
