@@ -1,7 +1,6 @@
 $(document).ready(function(){
 
-	var baseUrl = $("#baseUrl").val();
-
+	baseUrl = $("#baseUrl").val();
 	$("#listTable").DataTable({
 		"responsive": true,
 		"language": {
