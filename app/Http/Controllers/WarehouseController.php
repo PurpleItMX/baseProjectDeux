@@ -46,7 +46,7 @@ class WarehouseController extends Controller
     public function update($id)
     {
         $warehouse = Warehouse::findOrFail($id);
-        return view('warehouse.form')->with('warehouse',$warehouse);
+        return $warehouse;
     }
 
     /**
@@ -71,8 +71,12 @@ class WarehouseController extends Controller
 	        $warehouse->prorate = ($request['prorate'] == "on")?1:0;
 	        $warehouse->estatus = ($request['estatus'] == "on")?1:0;
         }
-            $warehouse->save();
-        return redirect()->action('WarehouseController@index');
+        $warehouse->save();
+        if($request['id_warehouse_redirect'] == 'true'){
+            return redirect()->action('WarehouseController@index');
+        }else{
+            Warehouse::all();
+        }
     }
 
     /**
@@ -82,7 +86,8 @@ class WarehouseController extends Controller
      */
     public function delete($id)
     {
-    	Warehouse::deleteById($id);
+        $warehouse = Warehouse::findOrFail($id);
+    	$warehouse->delete();
         return redirect()->action('WarehouseController@index');
     }
 }

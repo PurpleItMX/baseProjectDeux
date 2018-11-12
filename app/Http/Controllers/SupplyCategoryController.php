@@ -45,8 +45,7 @@ class SupplyCategoryController extends Controller
      */
     public function update($id)
     {
-        $supplyCategory = SupplyCategory::findOrFail($id);
-        return view('supply-category.form')->with('supplyCategory',$supplyCategory);
+        return $supplyCategory = SupplyCategory::findOrFail($id);
     }
 
     /**
@@ -72,7 +71,12 @@ class SupplyCategoryController extends Controller
 	        $supplyCategory->estatus = ($request['estatus'] == "on")?1:0;
         }
             $supplyCategory->save();
-        return redirect()->action('SupplyCategoryController@index');
+        
+        if($request['id_supply_category_redirect'] == 'true'){
+            return redirect()->action('SupplyCategoryController@index');
+        }else{
+            return SupplyCategory::all();
+        }
     }
 
     /**
@@ -82,7 +86,8 @@ class SupplyCategoryController extends Controller
      */
     public function delete($id)
     {
-    	SupplyCategory::deleteById($id);
+        $supplyCategory = SupplyCategory::findOrFail($id);
+        $supplyCategory->delete();
         return redirect()->action('SupplyCategoryController@index');
     }
 }

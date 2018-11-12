@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use App\SupplyType;
 use App\SupplyCategory;
 
 class SupplyTypeController extends Controller
 {
-/**
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -26,7 +27,10 @@ class SupplyTypeController extends Controller
     public function index()
     {
         $supplyTypes = SupplyType::all();
-        return view('supply-type.index')->with('supplyTypes',$supplyTypes);
+        $supplyCategories = SupplyCategory::all();
+        return view('supply-type.index')
+        ->with('supplyTypes',$supplyTypes)
+        ->with('supplyCategories',$supplyCategories);
     }
 
      /**
@@ -49,11 +53,10 @@ class SupplyTypeController extends Controller
      */
     public function update($id)
     {
-        $supplyType = SupplyType::findOrFail($id);
-        $supplyCategories = SupplyCategory::all();
-        return view('supply-type.form')
+        return $supplyType = SupplyType::findOrFail($id);
+        /*return view('supply-type.form')
         ->with('supplyType',$supplyType)
-        ->with('supplyCategories',$supplyCategories);
+        ->with('supplyCategories',$supplyCategories);*/
     }
 
     /**
@@ -79,7 +82,11 @@ class SupplyTypeController extends Controller
             $supplyType->estatus = ($request['estatus'] == "on")?1:0;       
         }
             $supplyType->save();
-        return redirect()->action('SupplyTypeController@index');
+        if($request['id_supply_type_redirect'] == 'true'){
+            return redirect()->action('SupplyTypeController@index');
+         }else{
+            return SupplyType::all();
+        }
     }
 
     /**
@@ -91,5 +98,16 @@ class SupplyTypeController extends Controller
     {
     	SupplyType::deleteById($id);
         return redirect()->action('SupplyTypeController@index');
+    }
+
+     /**
+     * Action for SupplyType by category
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function category($id)
+    {
+        $supplyTypes = SupplyType::all()->where('estatus', 1)->where('id_supply_category', $id);
+        return $supplyTypes;
     }
 }

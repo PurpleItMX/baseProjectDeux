@@ -46,9 +46,9 @@ class SeasonController extends Controller
      */
     public function update($id)
     {
-        $season = Season::findOrFail($id);
-        return view('season.form')
-        ->with('season',$season);
+        return $season = Season::findOrFail($id);
+        /*return view('season.form')
+        ->with('season',$season);*/
     }
 
     /**
@@ -74,7 +74,11 @@ class SeasonController extends Controller
 	        $season->estatus = ($request['estatus'] == "on")?1:0;     
         }
         $season->save();
-        return redirect()->action('SeasonController@index');
+        if($request['id_season_redirect'] == 'true'){
+            return redirect()->action('SeasonController@index');
+        }else{
+            return Season::all();
+        }
     }
 
     /**
@@ -84,7 +88,8 @@ class SeasonController extends Controller
      */
     public function delete($id)
     {
-    	Season::deleteById($id);
+        $season = Season::findOrFail($id);
+        $season->delete();
         return redirect()->action('SeasonController@index');
     }
 }

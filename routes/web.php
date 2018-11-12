@@ -40,6 +40,7 @@ Route::get('/supply-type', 'SupplyTypeController@create')->name('create');
 Route::get('/supply-type/{id}', 'SupplyTypeController@update')->name('update');
 Route::post('/supply-type/save', 'SupplyTypeController@save')->name('save');
 Route::get('/supply-type/delete/{id}', 'SupplyTypeController@delete')->name('delete');
+Route::get('/supply-type/category/{id}', 'SupplyTypeController@category')->name('category');
 
 //supplyCategory
 Route::get('/supply-categories', 'SupplyCategoryController@index')->name('index');
@@ -54,6 +55,13 @@ Route::get('/season', 'SeasonController@create')->name('create');
 Route::get('/season/{id}', 'SeasonController@update')->name('update');
 Route::post('/season/save', 'SeasonController@save')->name('save');
 Route::get('/season/delete/{id}', 'SeasonController@delete')->name('delete');
+
+//providers
+Route::get('/providers', 'ProviderController@index')->name('index');
+Route::get('/provider', 'ProviderController@create')->name('create');
+Route::get('/provider/{id}', 'ProviderController@update')->name('update');
+Route::post('/provider/save', 'ProviderController@save')->name('save');
+Route::get('/provider/delete/{id}', 'ProviderController@delete')->name('delete');
 
 //supplier
 Route::get('/supplier', 'SupplyController@new')->name('new');

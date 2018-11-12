@@ -5,3 +5,6 @@ php artisan make:seed  ejecuta los seed
 php artisan migrate:refresh hace rollback y crea las tablas
 
 php artisan make:seeder nombredelatablaseeder
+
+php artisan make:Controller nameController
+

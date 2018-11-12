@@ -29,9 +29,15 @@ class SupplyController extends Controller
      */
     public function new()
     {
+    	$supplyCategories = SupplyCategory::all();
+    	$supplyTypes = SupplyType::all();
+    	$seasons = Season::all();
     	$warehouses = Warehouse::all();
         return view('supplier.form')
         ->with('supply','')
-        ->with('warehouses',$warehouses);
+        ->with('warehouses',$warehouses)
+        ->with('supplyCategories',$supplyCategories)
+        ->with('seasons',$seasons)
+        ->with('supplyTypes',$supplyTypes);
     }
 }
