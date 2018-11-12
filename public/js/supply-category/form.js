@@ -24,7 +24,7 @@ $(document).ready(function(){
     	$("#variant").val("");
 		var id = $(this).attr('data-id');
 		$.ajax({
-  			url: 'http://localhost/baseProjectDeux/public/supply-category/'+id,
+  			url: baseUrl+'/supply-category/'+id,
 		})
 		/*.done(function() {console.log( "second success" );})*/
     	.fail(function() {

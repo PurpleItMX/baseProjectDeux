@@ -24,7 +24,7 @@ $(document).ready(function(){
 		$("#estatus").prop('checked',false);
 		var id = $(this).attr('data-id');
 		$.ajax({
-  			url: 'http://localhost/baseProjectDeux/public/season/'+id,
+  			url: baseUrl+'/season/'+id,
 		})
 		/*.done(function() {console.log( "second success" );})*/
     	.fail(function() {

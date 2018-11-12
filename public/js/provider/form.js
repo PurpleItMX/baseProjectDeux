@@ -13,7 +13,7 @@ $(document).ready(function(){
 		var id = $(this).val();
 		if(id != ""){
 			$.ajax({
-  				url: 'http://localhost/baseProjectDeux/public/supply-type/category/'+id,
+  				url: baseUrl+'/supply-type/category/'+id,
 			})
 			/*.done(function() {console.log( "second success" );})*/
 			.fail(function() {
@@ -80,7 +80,7 @@ $(document).ready(function(){
 		$("#estatus").prop('checked',false);
 		var id = $(this).attr('data-id');
 		$.ajax({
-  			url: 'http://localhost/baseProjectDeux/public/provider/'+id,
+  			url: baseUrl+'/provider/'+id,
 		})
 		/*.done(function() {console.log( "second success" );})*/
     	.fail(function() {

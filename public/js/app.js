@@ -1,4 +1,7 @@
 $(document).ready(function(){
+
+	var baseUrl = $("#baseUrl").val();
+
 	$("#listTable").DataTable({
 		"responsive": true,
 		"language": {
