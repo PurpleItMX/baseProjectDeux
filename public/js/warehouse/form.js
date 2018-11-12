@@ -24,7 +24,7 @@ $(document).ready(function(){
     	$("#prorate").prop('checked',false);
 		var id = $(this).attr('data-id');
 		$.ajax({
-  			url: 'http://localhost/baseProjectDeux/public/warehouse/'+id,
+  			url: baseUrl+'/warehouse/'+id,
 		})
 		/*.done(function() {console.log( "second success" );})*/
     	.fail(function() {
