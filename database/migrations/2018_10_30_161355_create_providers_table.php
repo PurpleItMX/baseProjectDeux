@@ -20,6 +20,8 @@ class CreateProvidersTable extends Migration
             $table->string('name')->unique();
             $table->string('name_commercial')->unique();
             $table->smallInteger('type'); // si es persona fisica persona moral extrangero o proveedor general
+            $table->integer('id_supply_type')->unsigned();
+            $table->integer('id_supply_category')->unsigned();
             $table->string('street');
             $table->string('number_ext');
             $table->string('number_int')->nullable();
@@ -32,6 +34,12 @@ class CreateProvidersTable extends Migration
             $table->string('email')->unique();
             $table->smallInteger('estatus');
             $table->timestamps();
+
+            $table->foreign('id_supply_type')->references('id_supply_type')->on('supply_types');//->onDelete('cascade');
+            $table->foreign('id_supply_category')->references('id_supply_category')->on('supply_categories');//->onDelete('cascade');
+
+            Schema::enableForeignKeyConstraints();
+            //Schema::disableForeignKeyConstraints();
         });
     }
 

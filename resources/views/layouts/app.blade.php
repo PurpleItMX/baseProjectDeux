@@ -34,7 +34,7 @@
     <script src="{{ URL::asset('js/app.js') }}"></script>
 </head>
 <body class="hold-transition sidebar-mini">
-    <input id="baseUrl" value="{{ url('/') }}" type="hidden"/>
+    <input id="baseUrl" value="{{ url('/') }}" type="hidden" />
     <div class="wrapper">
         <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
             <!-- Left navbar links -->

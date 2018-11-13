@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 
 use App\Provider;
-use App\supplyCategory;
+use App\SupplyCategory;
 
 class ProviderController extends Controller
 {

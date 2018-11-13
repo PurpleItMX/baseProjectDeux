@@ -17,9 +17,15 @@ class CreateSupplyTypesTable extends Migration
             $table->increments('id_supply_type');
             $table->string('clave')->unique();
             $table->string('description');
-            $table->Integer('id_supply_category');
+            $table->integer('id_supply_category')->unsigned();
             $table->smallInteger('estatus');
             $table->timestamps();
+
+            $table->foreign('id_supply_category')->references('id_supply_category')->on('supply_categories');
+            //->onDelete('cascade');
+
+        Schema::enableForeignKeyConstraints();
+        //Schema::disableForeignKeyConstraints();
         });
     }
 

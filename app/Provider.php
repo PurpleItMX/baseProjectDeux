@@ -20,7 +20,7 @@ class Provider extends Model
      * @var array
      */
     protected $fillable = [
-        'clave', 'rfc', 'name', 'name_commercial', 'type', 'street', 'number_ext', 'number_int', 'colony', 'city', 'state', 'country', 'zip_code', 'phone', 'email', 'estatus'
+        'clave', 'rfc', 'name', 'name_commercial', 'type', 'street', 'number_ext', 'number_int', 'colony', 'city', 'state', 'country', 'zip_code', 'phone', 'email', 'estatus', 'id_supply_category', 'id_supply_type'
     ];
 
     /**
