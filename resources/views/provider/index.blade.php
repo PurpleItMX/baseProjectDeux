@@ -1,52 +1,78 @@
 @extends('layouts.app')
 @section('content')
 <script src="{{ URL::asset('js/provider/form.js') }}"></script>
-	<center><h5>{{ __('Lista de Proveedores') }}</h5></center>
-	<div class="container">
-	<table id="listTable" class="table table-striped table-bordered" style="width:100%">
-		<thead>
-			<tr>
-				<th>{{ __('Id:') }}</th>
-				<th>{{ __('Clave:') }}</th>
-        <th>{{ __('Nombre:') }}</th>
-        <th>{{ __('Nombre Comercial:') }}</th>
-        <th>{{ __('RFC:') }}</th>
-        <th>{{ __('Estatus:') }}</th>
-				<th>{{ __('Acciones:') }}
-					<button type="button" class="btn btn-primary btn-sm" id="newProvider" >
-						<i class="fa fa-file" aria-hidden="true"></i> {{ __('Crear') }}
+<!-- Vista proveedores -->
+<div class="container-fluid">
+	<!-- Titulo -->
+	<div class="flat-cont espacio-flat">
+		<div class="row">
+			<div class="line-title"></div>
+			<div class="col-lg-4 col-xl-4">
+				<h5 class="title center-left">{{ __('Lista de Proveedores') }}</h5>
+			</div>
+			<div class="col-lg-2 col-xl-2 offset-lg-6 offset-xl-6">
+				<div class="groupButton aling-left esp-header">
+					<button type="button" class="btn-send" id="newProvider" >
+						{{ __('AGREGAR PROVEEDOR') }}
 					</button>
-				</th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach ($providers as $provider)
-				<tr>
-					<td>{{ $provider->id_provider }}</td>
-					<td>{{ $provider->clave }}</td>
-          <td>{{ $provider->name }}</td>
-          <td>{{ $provider->name_commercial }}</td>
-          <td>{{ $provider->rfc }}</td>
-          <td> @if($provider->estatus == 1) Activo @else Inactivo @endif</td>
-					<td>
-						<button type="button" class="btn btn-secondary btn-sm search-provider" data-id="{{ $provider->id_provider }}">
-							<i class="fa fa-pencil" aria-hidden="true"></i>
-						</button>
-            <button type="button" class="btn btn-warning btn-sm send-list" data-id="{{ $provider->id_provider }}">
-              <i class="fa fa-list" aria-hidden="true"></i>
-            </button>
-						<a type="button" class="btn btn-danger btn-sm" href="{{ url('/provider/delete/'.$provider->id_provider)}}">
-							<i class="fa fa-trash" aria-hidden="true"></i>
-						</a>
-					</td>
-				</tr>
-			@endforeach
-		</tbody>
-	</table>
+				</div>
+			</div>
+		</div>
 	</div>
+	<!-- Tabla de proveedores -->
+	<div class="row">
+		<div class="flat-cont">
+			<!-- Tabla -->
+			<div class="row">
+				<div class="col-lg-12 col-xl-12">
+					<table id="listTable" class="table table-striped table-bordered table-list">
+						<thead>
+							<tr>
+								<th>{{ __('Id:') }}</th>
+								<th>{{ __('Clave:') }}</th>
+				        <th>{{ __('Nombre:') }}</th>
+				        <th>{{ __('Nombre Comercial:') }}</th>
+				        <th>{{ __('RFC:') }}</th>
+				        <th>{{ __('Estatus:') }}</th>
+								<th>{{ __('Acciones:') }}
+									<!--<button type="button" class="btn btn-primary btn-sm" id="newProvider" >
+										<i class="fa fa-file" aria-hidden="true"></i> {{ __('Crear') }}
+									</button>-->
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach ($providers as $provider)
+								<tr>
+									<td>{{ $provider->id_provider }}</td>
+									<td>{{ $provider->clave }}</td>
+				          <td>{{ $provider->name }}</td>
+				          <td>{{ $provider->name_commercial }}</td>
+				          <td>{{ $provider->rfc }}</td>
+				          <td> @if($provider->estatus == 1) Activo @else Inactivo @endif</td>
+									<td>
+										<button type="button" class="btn btn-secondary btn-sm search-provider" data-id="{{ $provider->id_provider }}">
+											<i class="fa fa-pencil" aria-hidden="true"></i>
+										</button>
+				            <button type="button" class="btn btn-warning btn-sm send-list" data-id="{{ $provider->id_provider }}">
+				              <i class="fa fa-list" aria-hidden="true"></i>
+				            </button>
+										<button type="button" class="btn btn-danger btn-sm" href="{{ url('/provider/delete/'.$provider->id_provider)}}">
+											<i class="fa fa-trash" aria-hidden="true"></i>
+										</button>
+									</td>
+								</tr>
+							@endforeach
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 @endsection
-<div id="myModalProvider" class="modal" tabindex="-1" role="dialog">
+<div id="myModalProvider" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -110,7 +136,7 @@
               </label>
             </div>
           </div>
-              
+
           <div class="form-row">
              <div class="form-group col-md-6">
               <label for="name">{{ __('Razón social') }}</label>

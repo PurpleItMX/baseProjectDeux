@@ -7,7 +7,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>{{ config('app.name') }}</title>
-        
+
         <!-------------------------- Styles ---------------------------------------------------->
         <!-- Fonts -->
         <link href="{{ URL::asset('css/Nunito-font.css') }}" rel="stylesheet" type="text/css">
@@ -17,10 +17,10 @@
         <!-- style app-->
         <link href="{{ URL::asset('css/datatables.css') }}" rel="stylesheet">
         <link href="{{ URL::asset('css/welcome.css') }}" rel="stylesheet">
-       
+
         <!------------------------------ Scripts ---------------------------------->
-        <!-- jQuery -->    
-        <script src="{{ URL::asset('js/jquery-3.3.1.min.js') }}"></script>       
+        <!-- jQuery -->
+        <script src="{{ URL::asset('js/jquery-3.3.1.min.js') }}"></script>
         <script src="{{ URL::asset('js/popper.min.js') }}"></script>
         <script src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
         <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
@@ -55,7 +55,7 @@
                 </div>
             </div>
         </div>
-    
+
         <!-- Modal Login  -->
         <div id="myModalLogin" class="modal fade">
             <div class="modal-dialog modal-login">
@@ -63,8 +63,8 @@
                     <div class="modal-header">
                         <div class="avatar">
                             <img src="{{ URL::asset('img/avatar.png') }}" alt="Avatar">
-                        </div>              
-                        <h4 class="modal-title">{{ __('Registre Acceso') }}</h4>   
+                        </div>
+                        <h4 class="modal-title">{{ __('Registre Acceso') }}</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
@@ -76,16 +76,16 @@
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
-                                @endif     
+                                @endif
                             </div>
                             <div class="form-group">
-                                <input type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Contraseña" required="required"> 
+                                <input type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Contraseña" required="required">
                                  @if ($errors->has('password'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
                                 @endif
-                            </div> 
+                            </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
@@ -104,8 +104,8 @@
                     </div>
                 </div>
             </div>
-        </div> 
-       <!-- Fin Modal Login --> 
+        </div>
+       <!-- Fin Modal Login -->
 
        <!-- Modal Register  -->
         <div id="myModalRegister" class="modal fade">
@@ -114,8 +114,8 @@
                     <div class="modal-header">
                         <div class="avatar">
                             <img src="{{ URL::asset('img/avatar.png') }}" alt="Avatar">
-                        </div>              
-                        <h4 class="modal-title">{{ __('Nuevo Acceso') }}</h4>   
+                        </div>
+                        <h4 class="modal-title">{{ __('Nuevo Acceso') }}</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
@@ -138,7 +138,7 @@
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
                                 @endif
-                            </div>   
+                            </div>
                             <div class="form-group">
                                  <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="Contraseña">
 
@@ -147,10 +147,10 @@
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
                                 @endif
-                            </div>   
+                            </div>
                             <div class="form-group">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required placeholder="Confime contraseña">
-                            </div>   
+                            </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary btn-lg btn-block login-btn">{{ __('Registrar') }}</button>
                             </div>
@@ -158,7 +158,7 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
        <!-- Fin Modal Register -->
 
        <!-- Modal Recover  -->
@@ -168,8 +168,8 @@
                     <div class="modal-header">
                         <div class="avatar">
                             <img src="{{ URL::asset('img/avatar.png') }}" alt="Avatar">
-                        </div>              
-                        <h4 class="modal-title">{{ __('Recuperar Acceso') }}</h4>   
+                        </div>
+                        <h4 class="modal-title">{{ __('Recuperar Acceso') }}</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
@@ -187,8 +187,8 @@
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
-                                @endif 
-                            </div>     
+                                @endif
+                            </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary btn-lg btn-block login-btn">{{ __('Enviar link reseo contraseña') }}</button>
                             </div>
@@ -198,7 +198,7 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
        <!-- Fin Modal Recover -->
     </body>
 </html>
