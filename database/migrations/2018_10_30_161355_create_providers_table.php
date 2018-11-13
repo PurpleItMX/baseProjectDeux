@@ -35,8 +35,11 @@ class CreateProvidersTable extends Migration
             $table->smallInteger('estatus');
             $table->timestamps();
 
-            $table->foreign('id_supply_type')->references('id_supply_type')->on('supply_types')->onDelete('cascade');
-            $table->foreign('id_supply_category')->references('id_supply_category')->on('supply_categories')->onDelete('cascade');
+            $table->foreign('id_supply_type')->references('id_supply_type')->on('supply_types');//->onDelete('cascade');
+            $table->foreign('id_supply_category')->references('id_supply_category')->on('supply_categories');//->onDelete('cascade');
+
+            Schema::enableForeignKeyConstraints();
+            //Schema::disableForeignKeyConstraints();
         });
     }
 
