@@ -118,15 +118,10 @@ class UserController extends Controller
             $user = User::find($id);    
             $user->delete();
             $users = User::all();
-            return view('user.index')
-            ->with('users',$users)
-            ->withSuccess("Registro Borrado");
+            return redirect('/users')->with('success', 'Registro Borrado');
         }catch (QueryException $e){
-            $users = User::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('user.index')
-            ->with('users',$users)
-            ->withErrors($message);
+            return redirect('/users')->with('error', $message);
         }
     }
 
