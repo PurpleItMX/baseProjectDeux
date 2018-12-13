@@ -26,10 +26,17 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return view('user.index')
-        ->with('users',$users)
-        ->with('error', '');
+        try{
+            $users = User::all();
+            return view('user.index')
+            ->with('users',$users);
+        }catch (QueryException $e){
+            $users = User::all();
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('user.index')
+            ->with('users',$users)
+            ->withErrors($message);
+       }
     }
 
      /**
@@ -39,7 +46,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.form')->with('user','');
+        return view('user.form')
+        ->with('user','');
     }
 
     /**
@@ -49,8 +57,17 @@ class UserController extends Controller
      */
     public function update($id)
     {
-        $user = User::find($id);
-        return view('user.form')->with('user',$user);
+        try{
+            $user = User::find($id);
+            return view('user.form')
+            ->with('user',$user);
+        }catch (QueryException $e){
+            $users = User::all();
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('user.index')
+            ->with('users',$users)
+            ->withErrors($message);
+       }
     }
 
     /**
@@ -69,17 +86,24 @@ class UserController extends Controller
                 $user->email = $request['email'];
                 $user->password = Hash::make($request['password']);
                 $user->remember_token = str_random(10);
+                $message = "Registro Creado";
             }else{
                 $user  = User::findOrFail($id);
                 $user->name = $request['name'];
                 $user->email = $request['email'];
+                $message = "Registro Actualizado";
             }
-                $user->save();
-           return redirect()->action('UserController@index');
+            $user->save();
+            $users = User::all();
+            return view('user.index')
+            ->with('users',$users)
+            ->withSuccess($message);
        }catch (QueryException $e){
-            $error = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return redirect()->action('UserController@index')
-            ->with('error', $error);
+            $users = User::all();
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('user.index')
+            ->with('users',$users)
+            ->withErrors($message);
        }
     }
 
@@ -90,9 +114,20 @@ class UserController extends Controller
      */
     public function delete($id)
     {
-        $user = User::find($id);    
-        $user->delete();
-        return redirect()->action('UserController@index');
+        try{
+            $user = User::find($id);    
+            $user->delete();
+            $users = User::all();
+            return view('user.index')
+            ->with('users',$users)
+            ->withSuccess("Registro Borrado");
+        }catch (QueryException $e){
+            $users = User::all();
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('user.index')
+            ->with('users',$users)
+            ->withErrors($message);
+        }
     }
 
     /**
@@ -100,11 +135,28 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function resetPassword($id)
+    public function resetPassword(Request $request)
     {
-        $user  = User::findOrFail($id);
-        $user->password = Hash::make('12345678');
+        $user  = User::findOrFail($request["id"]);
+        $user->password = Hash::make($request["password"]);
         $user->save();
-        return redirect()->action('UserController@index');
+        return  1 ;
+    }
+
+    /**
+     * Action search if the data exist in the bd.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        if($request['id'] != NULL){
+            $user = User::where($request['column'], 'like', $request['val'])
+            ->where('id_user', '!=', $request['id'])->get();
+        }else{
+            $user = USer::where($request['column'], 'like', $request['val'])->get();
+        }
+
+        return $user;
     }
 }

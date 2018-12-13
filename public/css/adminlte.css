@@ -5041,7 +5041,7 @@ button.close, button.mailbox-attachment-close {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1050;
+  z-index: 30050;
   display: none;
   overflow: hidden;
   outline: 0;
@@ -5181,6 +5181,13 @@ button.close, button.mailbox-attachment-close {
 @media (min-width: 992px) {
   .modal-lg {
     max-width: 800px;
+  }
+}
+
+@media (min-width: 768px) {
+  .modal-xl {
+   width: 90%;
+   max-width:1200px;
   }
 }
 

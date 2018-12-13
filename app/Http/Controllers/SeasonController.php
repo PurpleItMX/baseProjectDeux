@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use App\Season;
 
 class SeasonController extends Controller
@@ -23,9 +24,16 @@ class SeasonController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $seasons = Season::all();
-        return view('season.index')->with('seasons',$seasons);
+    {   
+        try{
+            $seasons = Season::all();
+            return view('season.index')
+            ->with('seasons',$seasons);
+        }catch (QueryException $e){
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('season.index')
+            ->withErrors([$message]);
+       }
     }
 
      /**
@@ -33,11 +41,7 @@ class SeasonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        return view('season.form')
-        ->with('season','');
-    }
+    public function create(){}
 
     /**
      * Show the form for edit Season.
@@ -47,8 +51,6 @@ class SeasonController extends Controller
     public function update($id)
     {
         return $season = Season::findOrFail($id);
-        /*return view('season.form')
-        ->with('season',$season);*/
     }
 
     /**
@@ -59,26 +61,41 @@ class SeasonController extends Controller
      */
     public function save(Request $request)
     {
-        $id = $request['id_season'];
-        if($id == NULL){
-            $season = new Season();
-	        $season->clave = $request['clave'];
-	        $season->time_initial = $request['time_initial'];
-	        $season->time_end = $request['time_end'];
-	        $season->estatus = ($request['estatus'] == "on")?1:0;
-        }else{
-            $season = Season::findOrFail($id);
-			$season->clave = $request['clave'];
-	        $season->time_initial = $request['time_initial'];
-	        $season->time_end = $request['time_end'];
-	        $season->estatus = ($request['estatus'] == "on")?1:0;     
-        }
-        $season->save();
-        if($request['id_season_redirect'] == 'true'){
-            return redirect()->action('SeasonController@index');
-        }else{
-            return Season::all();
-        }
+        try {
+            $id = $request['id_season'];
+            if($id == NULL){
+                $season = new Season();
+    	        $season->clave = $request['clave'];
+                $season->description = $request['description'];
+    	        $season->time_initial = $request['time_initial'];
+    	        $season->time_end = $request['time_end'];
+    	        $season->estatus = ($request['estatus'] == "on")?1:0;
+                $message = "Registro Creado";
+            }else{
+                $season = Season::findOrFail($id);
+    			$season->clave = $request['clave'];
+                $season->description = $request['description'];
+    	        $season->time_initial = $request['time_initial'];
+    	        $season->time_end = $request['time_end'];
+    	        $season->estatus = ($request['estatus'] == "on")?1:0; 
+                $message = "Registro Actualizado";    
+            }
+            $season->save();
+            if($request['id_season_redirect'] == 'true'){
+                $seasons = Season::all();
+                return view('season.index')
+                ->with('seasons',$seasons)
+                ->withSuccess($message);
+            }else{
+                return Season::all()->where('estatus',1);
+            }
+         }catch (QueryException $e){
+            $seasons = Season::all();
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('season.index')
+            ->with('seasons',$seasons)
+            ->withErrors([$message]);
+       }
     }
 
     /**
@@ -88,9 +105,37 @@ class SeasonController extends Controller
      */
     public function delete($id)
     {
-        $season = Season::findOrFail($id);
-        $season->delete();
-        return redirect()->action('SeasonController@index');
+        try {
+            $season = Season::findOrFail($id);
+            $season->delete();
+            $seasons = Season::all();
+            return view('season.index')
+            ->with('seasons',$seasons)
+            ->withSuccess('Registro Borrado');
+        }catch (QueryException $e){
+            $seasons = Season::all();
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('season.index')
+            ->with('seasons',$seasons)
+            ->withErrors([$message]);
+       }
+    }
+
+         /**
+     * Action search if the data exist in the bd.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        if($request['id'] != NULL){
+            $season = Season::where($request['column'], 'like', $request['val'])
+            ->where('id_season', '!=', $request['id'])->get();
+        }else{
+            $season = Season::where($request['column'], 'like', $request['val'])->get();
+        }
+
+        return $season;
     }
 }
 

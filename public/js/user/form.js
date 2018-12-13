@@ -1,25 +1,18 @@
 $(document).ready(function(){
 	$("#saveFormUser").click(function(){
-		$("#saveUser").validate();
+		$("#saveUser").validate({
+			 rules : {
+                password : {
+                    minlength : 8
+                },
+                password_confirmation : {
+                    minlength : 8,
+                    equalTo : "#password"
+                }
+            }
+		});
 		if($("#saveUser").valid()){
 			$("#saveUser").submit();
-		}
-	});
-
-	$("#password").change(function(){
-		if($("#password-confirm").value() == $("#password").value()){
-			$("#password-confirm").addClass('error');
-		}else{
-			$("#password-confirm").removeClass('error');
-		}
-
-	});
-
-	$("#password-confirm").change(function(){
-		if($("#password-confirm").value() == $("#password").value()){
-			$("#password-confirm").addClass('error');
-		}else{
-			$("#password-confirm").removeClass('error');
 		}
 	});
 

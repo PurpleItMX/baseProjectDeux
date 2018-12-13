@@ -19,8 +19,11 @@ class Season extends Model
      * @var array
      */
     protected $fillable = [
-        'clave', 'time_initial', 'time_end', 'estatus',
+        'clave', 'description', 'time_initial', 'time_end', 'estatus',
     ];
+
+
+    protected $dates = ['time_initial', 'time_end'];
 
     /**
      * The attributes that should be hidden for arrays.

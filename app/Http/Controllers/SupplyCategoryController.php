@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use App\SupplyCategory;
 
 class SupplyCategoryController extends Controller
@@ -24,8 +25,16 @@ class SupplyCategoryController extends Controller
      */
     public function index()
     {
-        $supplyCategories = SupplyCategory::all();
-        return view('supply-category.index')->with('supplyCategories',$supplyCategories);
+        try{
+            $supplyCategories = SupplyCategory::all();
+            return view('supply-category.index')
+            ->with('supplyCategories',$supplyCategories);
+        }catch (QueryException $e){
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('supply-category.index')
+            ->withErrors([$message]);
+        }
+
     }
 
      /**
@@ -33,10 +42,7 @@ class SupplyCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        return view('supply-category.form')->with('supplyCategory','');
-    }
+    public function create(){}
 
     /**
      * Show the form for edit SupplyCategory.
@@ -56,27 +62,40 @@ class SupplyCategoryController extends Controller
      */
     public function save(Request $request)
     {
-        $id = $request['id_supply_category'];
-        if($id == NULL){
-            $supplyCategory = new SupplyCategory();
-	        $supplyCategory->clave = $request['clave'];
-	        $supplyCategory->description = $request['description'];
-	        $supplyCategory->variant = $request['variant'];
-	        $supplyCategory->estatus = ($request['estatus'] == "on")?1:0;
-        }else{
-            $supplyCategory  = SupplyCategory::findOrFail($id);
-            $supplyCategory->clave = $request['clave'];
-	        $supplyCategory->description = $request['description'];
-	        $supplyCategory->variant = $request['variant'];
-	        $supplyCategory->estatus = ($request['estatus'] == "on")?1:0;
-        }
-            $supplyCategory->save();
-        
-        if($request['id_supply_category_redirect'] == 'true'){
-            return redirect()->action('SupplyCategoryController@index');
-        }else{
-            return SupplyCategory::all();
-        }
+        try {
+            $id = $request['id_supply_category'];
+            if($id == NULL){
+                $supplyCategory = new SupplyCategory();
+    	        $supplyCategory->clave = $request['clave'];
+    	        $supplyCategory->description = $request['description'];
+    	        $supplyCategory->variant = $request['variant'];
+    	        $supplyCategory->estatus = ($request['estatus'] == "on")?1:0;
+                $message = "Registro Creado";
+            }else{
+                $supplyCategory  = SupplyCategory::findOrFail($id);
+                $supplyCategory->clave = $request['clave'];
+    	        $supplyCategory->description = $request['description'];
+    	        $supplyCategory->variant = $request['variant'];
+    	        $supplyCategory->estatus = ($request['estatus'] == "on")?1:0;
+                $message = "Registro Actualizado";
+            }
+                $supplyCategory->save();
+            
+            if($request['id_supply_category_redirect'] == 'true'){
+                $supplyCategories = SupplyCategory::all();
+                return view('supply-category.index')
+                ->with('supplyCategories',$supplyCategories)
+                ->withSuccess($message);
+            }else{
+                return SupplyCategory::all()->where('estatus',1);
+            }
+        }catch (QueryException $e){
+            $supplyCategories = SupplyCategory::all();
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('supply-category.index')
+            ->with('supplyCategories',$supplyCategories)
+            ->withErrors([$message]);
+       }
     }
 
     /**
@@ -86,8 +105,36 @@ class SupplyCategoryController extends Controller
      */
     public function delete($id)
     {
-        $supplyCategory = SupplyCategory::findOrFail($id);
-        $supplyCategory->delete();
-        return redirect()->action('SupplyCategoryController@index');
+        try {
+            $supplyCategory = SupplyCategory::findOrFail($id);
+            $supplyCategory->delete();
+            $supplyCategories = SupplyCategory::all();
+            return view('supply-category.index')
+            ->with('supplyCategories',$supplyCategories)
+            ->withSuccess('Registro Borrado');
+        }catch (QueryException $e){
+            $supplyCategories = SupplyCategory::all();
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('supply-category.index')
+            ->with('supplyCategories',$supplyCategories)
+            ->withErrors([$message]);
+       }
+    }
+
+     /**
+     * Action search if the data exist in the bd.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        if($request['id'] != NULL){
+            $supplyCategory = SupplyCategory::where($request['column'], 'like', $request['val'])
+            ->where('id_supply_category', '!=', $request['id'])->get();
+        }else{
+            $supplyCategory = SupplyCategory::where($request['column'], 'like', $request['val'])->get();
+        }
+
+        return $supplyCategory;
     }
 }

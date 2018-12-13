@@ -129,3 +129,18 @@ input:checked + .slider:before {
   border-radius: 50%;
   background: white;
 }
+
+.modal-header {
+  background-color:snow;
+}
+
+.modal-footer {
+  background-color:snow;
+}
+
+.alert{
+  z-index: 50000;
+  width: 500px;
+  right: 10px;
+  position: fixed;
+}

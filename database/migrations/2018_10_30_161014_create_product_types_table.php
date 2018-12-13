@@ -14,8 +14,16 @@ class CreateProductTypesTable extends Migration
     public function up()
     {
         Schema::create('product_types', function (Blueprint $table) {
-            $table->increments('id_product');
+            $table->increments('id_product_type');
+            $table->string('clave')->unique();
+            $table->string('description');
+            $table->integer('id_product_category')->unsigned();
+            $table->smallInteger('estatus');
             $table->timestamps();
+
+            $table->foreign('id_product_category')->references('id_product_category')->on('product_categories');
+
+        Schema::enableForeignKeyConstraints();
         });
     }
 

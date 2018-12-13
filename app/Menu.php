@@ -6,13 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
 {
+
+    protected $primaryKey = 'id_menu';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id_parent', 'name', 'url', 'icono',
+        'id_parent', 'name', 'url', 'icono', 'estatus',
     ];
 
     /**

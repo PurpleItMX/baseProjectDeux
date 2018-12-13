@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SupplyCategory extends Model
 {
-        /**
+    /**
     *The name de primarykey if is diferente of the id
     *
     *

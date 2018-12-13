@@ -10,6 +10,7 @@ $(document).ready(function(){
 	$("#newSupplyCategory").click(function(){
 		$("#id_supply_category").val("");
 		$("#clave").val("");
+		$("#clave").attr('data-id' , '');
 		$("#description").val("");
 		$("#estatus").prop('checked',false);
     	$("#variant").val("");
@@ -19,6 +20,7 @@ $(document).ready(function(){
 	$(".search-supply-category").click(function(){
 		$("#id_supply_category").val("");
 		$("#clave").val("");
+		$("#clave").attr('data-id' , '');
 		$("#description").val("");
 		$("#estatus").prop('checked',false);
     	$("#variant").val("");
@@ -32,9 +34,10 @@ $(document).ready(function(){
   		}).always(function(data) {
   			$("#id_supply_category").val(data.id_supply_category);
   			$("#clave").val(data.clave);
+  			$("#clave").attr('data-id' , data.id_supply_category);
   			$("#description").val(data.description);
   			$("#variant").val(data.variant);
-  			if(data.estatus)
+  			if(data.estatus == 1)
     			$("#estatus").prop('checked',true);
   		});
 		$("#myModalSupplyCategory").modal();

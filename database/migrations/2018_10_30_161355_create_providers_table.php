@@ -20,23 +20,23 @@ class CreateProvidersTable extends Migration
             $table->string('name')->unique();
             $table->string('name_commercial')->unique();
             $table->smallInteger('type'); // si es persona fisica persona moral extrangero o proveedor general
-            $table->integer('id_supply_type')->unsigned();
-            $table->integer('id_supply_category')->unsigned();
-            $table->string('street');
-            $table->string('number_ext');
+            $table->integer('id_provider_type')->unsigned();
+            $table->integer('id_provider_category')->unsigned();
+            $table->string('street')->nullable();
+            $table->string('number_ext')->nullable();
             $table->string('number_int')->nullable();
             $table->string('colony');
             $table->string('city');
             $table->string('state');
             $table->string('country');
             $table->string('zip_code');
-            $table->integer('phone')->nullable();
+            $table->string('phone');
             $table->string('email')->unique();
             $table->smallInteger('estatus');
             $table->timestamps();
 
-            $table->foreign('id_supply_type')->references('id_supply_type')->on('supply_types');//->onDelete('cascade');
-            $table->foreign('id_supply_category')->references('id_supply_category')->on('supply_categories');//->onDelete('cascade');
+            $table->foreign('id_provider_type')->references('id_provider_type')->on('provider_types');//->onDelete('cascade');
+            $table->foreign('id_provider_category')->references('id_provider_category')->on('provider_categories');//->onDelete('cascade');
 
             Schema::enableForeignKeyConstraints();
             //Schema::disableForeignKeyConstraints();

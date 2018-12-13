@@ -14,11 +14,14 @@
     <link href="{{ URL::asset('css/font-awesome.min.css') }}" rel="stylesheet"  type="text/css">
     <link href="{{ URL::asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ URL::asset('css/datatables.css') }}" rel="stylesheet">
-    <link href="{{ URL::asset('css/estilos.css') }}" rel="stylesheet" type="text/css">
+    <!--<link href="{{ URL::asset('css/estilos.css') }}" rel="stylesheet" type="text/css">-->
+    <link href="{{ URL::asset('css/tableStyle.css') }}" rel="stylesheet" type="text/css">
     <!-- style dasboard-->
     <link rel="stylesheet" href="{{ URL::asset('css/adminlte.css') }}">
     <!-- style app-->
     <link rel="stylesheet" href="{{ URL::asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('css/boxStyle.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('css/estilos.css') }}">
 
     <!------------------------------ Scripts ---------------------------------->
     <!-- jQuery -->
@@ -27,24 +30,29 @@
     <script src="{{ URL::asset('js/additional-methods.min.js') }}"></script>
     <script src="{{ URL::asset('js/popper.min.js') }}"></script>
     <script src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ URL::asset('js/jquery.mask.min.js') }}"></script>
     <script src="{{ URL::asset('js/datatables.min.js') }}"></script>
     <!-- style de menu -->
     <script src="{{ URL::asset('js/adminlte.js') }}"></script>
     <!--  propios del proyecto-->
     <script src="{{ URL::asset('js/app.js') }}"></script>
 </head>
-<body class="hold-transition sidebar-mini">
+<!--quitar el collapse para productivo-->
+<body class="hold-transition sidebar-mini sidebar-collapse">
+    @guest
+        <script type="text/javascript">
+            window.location = "{{ url('/') }}";
+        </script>
+    @else
     <input id="baseUrl" value="{{ url('/') }}" type="hidden" />
     <div class="wrapper">
+        @if(Auth::user())
         <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
+                <a id="buttonMenu" class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
               </li>
-              <!--<li class="nav-item d-none d-sm-inline-block">
-                <a href="{{ url('/home') }}" class="nav-link">Home</a>
-              </li>-->
             </ul>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
@@ -54,8 +62,11 @@
                         {{ Auth::user()->name }} <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <button class="dropdown-item" type="button" id="ChangePassword">
+                            <i class="fa fa-exchange"></i> {{ __('Cambiar Contraseña') }}
+                        </button>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            {{ __('Salir') }}
+                            <i class="fa fa-power-off"></i> {{ __('Salir') }}
                         </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
@@ -64,7 +75,7 @@
                 </li>
             </ul>
         </nav>
-
+        @endif
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
             <a href="{{ url('/') }}" class="brand-link">
@@ -97,12 +108,62 @@
             <section class="content">
               <div class="container-fluid">
                 <main class="py-4">
+                    @if(!empty($success))
+                        <input id="message" value="{{ $success }}" type="hidden"/>
+                        <div class="alert alert-success">
+                            <p>{{ $success }}</p>
+                            <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>-->
+                        </div>
+                    @endif
+                    @if($errors->any())
+                        <input id="message" value="{{ $errors->first()}}" type="hidden"/>
+                        <div class="alert alert-danger">
+                            <p>{{ $errors->first()}}</p>
+                            <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>-->
+                        </div>
+                    @endif
+
+                    <div id="message"></div>
                     @yield('content')
                 </main>
               </div>
             </section>
         </div>
-
     </div>
+
+    <div id="ChangePasswordModal" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-xs" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <center><h5 class="modal-title">{{ __('Cambio de Contraseña') }}</h5></center>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="saveChangePasswordForm" name="form-new-password" method="POST" action="">
+                @csrf
+                <input id="idUser" type="hidden" class="form-control " name="id_user" value="{{ Auth::user()->id }}">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="new-password">{{ __('Nueva Contraseña:') }}</label>
+                      <input id="new-password" type="password" class="form-control" name="new-password" required value="">
+                    </div>
+                </div>
+            </form>
+         </div>
+          <div class="modal-footer">
+            <button id="saveChangePassword" type="button" class="btn btn-primary"><i class="fa fa-floppy-o"></i> {{ __('Guardar') }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> {{ __('Cancelar') }}</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    @endguest
 </body>
 </html>

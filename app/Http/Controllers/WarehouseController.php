@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use App\Warehouse;
 
 class WarehouseController extends Controller
 {
- /**
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -24,8 +25,15 @@ class WarehouseController extends Controller
      */
     public function index()
     {
-        $warehouses = Warehouse::all();
-        return view('warehouse.index')->with('warehouses',$warehouses);
+        try{
+            $warehouses = Warehouse::all();
+            return view('warehouse.index')
+            ->with('warehouses',$warehouses);
+         }catch (QueryException $e){
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('warehouse.index')
+            ->withErrors([$message]);
+       }
     }
 
      /**
@@ -33,10 +41,7 @@ class WarehouseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        return view('warehouse.form')->with('warehouse','');
-    }
+    public function create(){}
 
     /**
      * Show the form for edit Warehouse.
@@ -45,8 +50,14 @@ class WarehouseController extends Controller
      */
     public function update($id)
     {
-        $warehouse = Warehouse::findOrFail($id);
-        return $warehouse;
+        try{
+            $warehouse = Warehouse::findOrFail($id);
+            return $warehouse;
+        }catch (QueryException $e){
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('warehouse.index')
+            ->withErrors([$message]);
+       }
     }
 
     /**
@@ -57,26 +68,39 @@ class WarehouseController extends Controller
      */
     public function save(Request $request)
     {
-        $id = $request['id_warehouse'];
-        if($id == NULL){
-            $warehouse = new Warehouse();
-	        $warehouse->clave = $request['clave'];
-	        $warehouse->description = $request['description'];
-	        $warehouse->prorate = ($request['prorate'] == "on")?1:0;
-	        $warehouse->estatus = ($request['estatus'] == "on")?1:0;
-        }else{
-            $warehouse  = Warehouse::findOrFail($id);
-            $warehouse->clave = $request['clave'];
-	        $warehouse->description = $request['description'];
-	        $warehouse->prorate = ($request['prorate'] == "on")?1:0;
-	        $warehouse->estatus = ($request['estatus'] == "on")?1:0;
-        }
-        $warehouse->save();
-        if($request['id_warehouse_redirect'] == 'true'){
-            return redirect()->action('WarehouseController@index');
-        }else{
-            Warehouse::all();
-        }
+        try{
+            $id = $request['id_warehouse'];
+            if($id == NULL){
+                $warehouse = new Warehouse();
+    	        $warehouse->clave = $request['clave'];
+    	        $warehouse->description = $request['description'];
+    	        $warehouse->prorate = ($request['prorate'] == "on")?1:0;
+    	        $warehouse->estatus = ($request['estatus'] == "on")?1:0;
+                $message = "Registro Creado";
+            }else{
+                $warehouse  = Warehouse::findOrFail($id);
+                $warehouse->clave = $request['clave'];
+    	        $warehouse->description = $request['description'];
+    	        $warehouse->prorate = ($request['prorate'] == "on")?1:0;
+    	        $warehouse->estatus = ($request['estatus'] == "on")?1:0;
+                $message = "Registro Actualizado";
+            }
+            $warehouse->save();
+            if($request['id_warehouse_redirect'] == 'true'){
+                $warehouses = Warehouse::all();
+                return view('warehouse.index')
+                ->with('warehouses',$warehouses)
+                ->withSuccess($message);
+            }else{
+                return Warehouse::all()->where('estatus',1);
+            }
+        }catch (QueryException $e){
+            $warehouses = Warehouse::all();
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('warehouse.index')
+            ->with('warehouses',$warehouses)
+            ->withErrors([$message]);
+       }
     }
 
     /**
@@ -86,8 +110,36 @@ class WarehouseController extends Controller
      */
     public function delete($id)
     {
-        $warehouse = Warehouse::findOrFail($id);
-    	$warehouse->delete();
-        return redirect()->action('WarehouseController@index');
+        try{
+            $warehouse = Warehouse::findOrFail($id);
+    	    $warehouse->delete();
+            $warehouses = Warehouse::all();
+            return view('warehouse.index')
+            ->with('warehouses',$warehouses)
+            ->withSuccess('Registro Borrado');
+        }catch (QueryException $e){
+            $warehouses = Warehouse::all();
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('warehouse.index')
+            ->with('warehouses',$warehouses)
+            ->withErrors([$message]);
+       }
+    }
+
+     /**
+     * Action search if the data exist in the bd.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        if($request['id'] != NULL){
+            $warehouse = Warehouse::where($request['column'], 'like', $request['val'])
+            ->where('id_warehouse', '!=', $request['id'])->get();
+        }else{
+            $warehouse = Warehouse::where($request['column'], 'like', $request['val'])->get();
+        }
+
+        return $warehouse;
     }
 }

@@ -26,11 +26,25 @@ class SupplyTypeController extends Controller
      */
     public function index()
     {
-        $supplyTypes = SupplyType::all();
-        $supplyCategories = SupplyCategory::all();
-        return view('supply-type.index')
-        ->with('supplyTypes',$supplyTypes)
-        ->with('supplyCategories',$supplyCategories);
+        try{
+            $supplyTypes = SupplyType::all();
+            $supplyCategoriesAll = SupplyCategory::all();
+            $supplyCategories = SupplyCategory::all()->where('estatus',1);
+            return view('supply-type.index')
+            ->with('supplyTypes',$supplyTypes)
+            ->with('supplyCategories',$supplyCategories)
+            ->with('supplyCategoriesAll',$supplyCategoriesAll);
+        }catch (QueryException $e){
+            $supplyTypes = SupplyType::all();
+            $supplyCategoriesAll = SupplyCategory::all();
+            $supplyCategories = SupplyCategory::all()->where('estatus',1);
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('supply-type.index')
+            ->with('supplyTypes',$supplyTypes)
+            ->with('supplyCategories',$supplyCategories)
+            ->with('supplyCategoriesAll',$supplyCategoriesAll)
+            ->withErrors([$message]);
+       }
     }
 
      /**
@@ -38,13 +52,7 @@ class SupplyTypeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        $supplyCategories = SupplyCategory::all();
-        return view('supply-type.form')
-        ->with('supplyType','')
-        ->with('supplyCategories',$supplyCategories);
-    }
+    public function create(){}
 
     /**
      * Show the form for edit SupplyType.
@@ -54,9 +62,6 @@ class SupplyTypeController extends Controller
     public function update($id)
     {
         return $supplyType = SupplyType::findOrFail($id);
-        /*return view('supply-type.form')
-        ->with('supplyType',$supplyType)
-        ->with('supplyCategories',$supplyCategories);*/
     }
 
     /**
@@ -67,26 +72,47 @@ class SupplyTypeController extends Controller
      */
     public function save(Request $request)
     {
-        $id = $request['id_supply_type'];
-        if($id == NULL){
-            $supplyType = new SupplyType();
-	        $supplyType->clave = $request['clave'];
-	        $supplyType->description = $request['description'];
-	        $supplyType->id_supply_category = $request['id_supply_category'];
-	        $supplyType->estatus = ($request['estatus'] == "on")?1:0;
-        }else{
-            $supplyType = SupplyType::findOrFail($id);
-            $supplyType->clave = $request['clave'];
-            $supplyType->description = $request['description'];
-            $supplyType->id_supply_category = $request['id_supply_category'];
-            $supplyType->estatus = ($request['estatus'] == "on")?1:0;       
-        }
-            $supplyType->save();
-        if($request['id_supply_type_redirect'] == 'true'){
-            return redirect()->action('SupplyTypeController@index');
-         }else{
-            return SupplyType::all();
-        }
+        try{
+            $id = $request['id_supply_type'];
+            if($id == NULL){
+                $supplyType = new SupplyType();
+    	        $supplyType->clave = $request['clave'];
+    	        $supplyType->description = $request['description'];
+    	        $supplyType->id_supply_category = $request['id_supply_category'];
+    	        $supplyType->estatus = ($request['estatus'] == "on")?1:0;
+                $message = "Registro Creado";
+            }else{
+                $supplyType = SupplyType::findOrFail($id);
+                $supplyType->clave = $request['clave'];
+                $supplyType->description = $request['description'];
+                $supplyType->id_supply_category = $request['id_supply_category'];
+                $supplyType->estatus = ($request['estatus'] == "on")?1:0;   
+                $message = "Registro Actualizado";    
+            }
+                $supplyType->save();
+            if($request['id_supply_type_redirect'] == 'true'){
+                $supplyCategoriesAll = SupplyCategory::all();
+                $supplyTypes = SupplyType::all();
+                $supplyCategories = SupplyCategory::all()->where('estatus',1);
+                return view('supply-type.index')
+                ->with('supplyTypes',$supplyTypes)
+                ->with('supplyCategories',$supplyCategories)
+                ->with('supplyCategoriesAll',$supplyCategoriesAll)
+                ->withSuccess($message);
+             }else{
+                return SupplyType::all()->where('estatus',1);
+            }
+        }catch (QueryException $e){
+            $supplyCategoriesAll = SupplyCategory::all();
+            $supplyTypes = SupplyType::all();
+            $supplyCategories = SupplyCategory::all()->where('estatus',1);
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('supply-type.index')
+            ->with('supplyTypes',$supplyTypes)
+            ->with('supplyCategories',$supplyCategories)
+            ->with('supplyCategoriesAll',$supplyCategoriesAll)
+            ->withErrors([$message]);
+       }
     }
 
     /**
@@ -96,8 +122,28 @@ class SupplyTypeController extends Controller
      */
     public function delete($id)
     {
-    	SupplyType::deleteById($id);
-        return redirect()->action('SupplyTypeController@index');
+        try{
+            $supplyType = SupplyType::findOrFail($id);
+            $supplyType->delete();
+            $supplyTypes = SupplyType::all();
+            $supplyCategoriesAll = SupplyCategory::all();
+            $supplyCategories = SupplyCategory::all()->where('estatus',1);
+            return view('supply-type.index')
+            ->with('supplyTypes',$supplyTypes)
+            ->with('supplyCategories',$supplyCategories)
+            ->with('supplyCategoriesAll',$supplyCategoriesAll)
+            ->withSuccess('Registro Borrado');
+        }catch (QueryException $e){
+            $supplyTypes = SupplyType::all();
+            $supplyCategoriesAll = SupplyCategory::all();
+            $supplyCategories = SupplyCategory::all()->where('estatus',1);
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('supply-type.index')
+            ->with('supplyTypes',$supplyTypes)
+            ->with('supplyCategories',$supplyCategories)
+            ->with('supplyCategoriesAll',$supplyCategoriesAll)
+            ->withErrors([$message]);
+       }
     }
 
      /**
@@ -109,5 +155,22 @@ class SupplyTypeController extends Controller
     {
         $supplyTypes = SupplyType::all()->where('estatus', 1)->where('id_supply_category', $id);
         return $supplyTypes;
+    }
+
+    /**
+     * Action search if the data exist in the bd.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        if($request['id'] != NULL){
+            $supplyType = SupplyType::where($request['column'], 'like', $request['val'])
+            ->where('id_supply_type', '!=', $request['id'])->get();
+        }else{
+            $supplyType = SupplyType::where($request['column'], 'like', $request['val'])->get();
+        }
+
+        return $supplyType;
     }
 }

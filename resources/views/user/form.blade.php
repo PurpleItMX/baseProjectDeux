@@ -11,11 +11,11 @@
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="name">{{ __('Nombre') }}</label>
-            <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" required autofocus value={{ $user ? $user->name : "" }}>
+            <input id="name" type="text" class="form-control" name="name" required autofocus value={{ $user ? $user->name : "" }}>
           </div>
           <div class="form-group col-md-6">
             <label for="email">{{ __('Correo') }}</label>
-            <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" required value={{ $user ? $user->email : "" }}>
+            <input id="email" type="email" class="form-control search" data-id="{{ $user ? $user->id_user : ''}}" data-controller ="user" name="email" required value={{ $user ? $user->email : "" }}>
           </div>
 
         </div>
@@ -23,11 +23,11 @@
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="password">{{ __('Contraseña') }}</label>
-            <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-          </div>
+            <input id="password" type="password" class="form-control" name="password" required>
+          </div> 
           <div class="form-group col-md-6">
-            <label for="password-confirm">{{ __('Confirmar Contraseña') }}</label>
-            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+            <label for="password_confirmation">{{ __('Confirmar Contraseña') }}</label>
+            <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" required>
           </div>
         </div>
         @endif
@@ -43,8 +43,8 @@
 
     <center>
       <div class="footer-page">
-          <button id="saveFormUser" type="button" class="btn btn-primary btn-sm">Guardar</button>
-          <button type="button" class="btn btn-secondary btn-sm" onclick="goBack()">Cancelar</button>
+          <button id="saveFormUser" type="button" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i> {{ __('Aceptar') }}</button>
+          <button type="button" class="btn btn-default btn-sm" onclick="goBack()"><i class="fa fa-close"></i> {{ __('Cancelar') }}</button>
       </div>
   </center>
 

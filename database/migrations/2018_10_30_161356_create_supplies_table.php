@@ -21,6 +21,7 @@ class CreateSuppliesTable extends Migration
             $table->Integer('id_supply_category')->unsigned();
             $table->Integer('id_supply_type')->unsigned();
             $table->Integer('id_season');
+            $table->string('performance');
             $table->string('tolerance');
             $table->string('stock_fixed');
             $table->string('stock_variable');
@@ -31,6 +32,9 @@ class CreateSuppliesTable extends Migration
             $table->smallInteger('is_direct_purchase'); //si es compra directa
             $table->smallInteger('type'); //si es copeo producto unico o venta directa
             $table->smallInteger('estatus');
+            $table->string('last_cost')->nullable();
+            $table->string('average_cost')->nullable();
+            $table->string('last_variation')->nullable();
             $table->Integer('id_provider_primary')->unsigned();
             $table->Integer('id_provider_second')->unsigned();
             $table->Integer('id_provider_third')->unsigned();

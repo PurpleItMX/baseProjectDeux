@@ -1,8 +1,8 @@
-h5{
+/*h5{
   font-size: 1.5rem !important;
-}
+}*/
 /* Alineaciones */
-.aling-left{
+/*.aling-left{
   display: flex;
   flex-direction: row;
   align-items: flex-end;
@@ -70,4 +70,67 @@ h5{
 .btn-send:hover{
   background-color: #7CD68E;
   transition: all 1s ease;
+}*/
+
+.group-row{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.group-row p{
+  padding: 0;
+  margin: 0;
+}
+.text{
+  font-size: .9rem;
+}
+.esp-full{
+  justify-content: space-between;
+}
+.icon-alert{
+  width:  12px;
+  height: 12px;
+  background-color: #B60000;
+  border-radius: 100px;
+}
+.icon-green{
+  width:  12px;
+  height: 12px;
+  background-color: #45AD4E;
+  border-radius: 100px;
+}
+.input-compress{
+  height: 30px;
+}
+.layout-cont{
+  width: 300px;
+  height: 100px;
+  margin-left:  5px;
+  margin-right: 5px;
+  border: solid 1px;
+  padding: 8px;
+}
+.input-folio{
+  margin-left: 10px;
+  width: 100px !important;
+}
+.input-date{
+  margin-left: 10px;
+  width: 170px !important;
+}
+.btnLayout{
+  width: 150px;
+}
+.titulo-layout{
+  font-weight: bolder;
+  text-align: center;
+}
+.text-small{
+  font-size: .9rem;
+}
+.padding-top{
+  margin-top: 10px;
+}
+.margi-left{
+  margin-left: 20px;
 }

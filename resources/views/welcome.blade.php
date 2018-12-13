@@ -42,7 +42,7 @@
                         </form>
                     @else
                         <a href="#myModalLogin" class="trigger-btn" data-toggle="modal">Acceder</a>
-                        <a href="#myModalRegister" class="trigger-btn" data-toggle="modal">Registro</a>
+                        <!--<a href="#myModalRegister" class="trigger-btn" data-toggle="modal">Registro</a>-->
                         <!--<a href="{{ route('login') }}">Login</a>
                         <a href="{{ route('register') }}">Register</a>-->
                     @endauth
@@ -57,7 +57,7 @@
         </div>
 
         <!-- Modal Login  -->
-        <div id="myModalLogin" class="modal fade">
+        <div id="myModalLogin" class="modal fade" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-login">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -108,7 +108,7 @@
        <!-- Fin Modal Login -->
 
        <!-- Modal Register  -->
-        <div id="myModalRegister" class="modal fade">
+        <div id="myModalRegister" class="modal fade" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-login">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -162,7 +162,7 @@
        <!-- Fin Modal Register -->
 
        <!-- Modal Recover  -->
-        <div id="myModalRecover" class="modal fade">
+        <div id="myModalRecover" class="modal fade" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-login">
                 <div class="modal-content">
                     <div class="modal-header">

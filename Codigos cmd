@@ -8,3 +8,7 @@ php artisan make:seeder nombredelatablaseeder
 
 php artisan make:Controller nameController
 
+
+para query cuando busque que no se ha null 
+->orWhereNull('campo')
+->where('campo','!=',value)

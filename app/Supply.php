@@ -19,7 +19,7 @@ class Supply extends Model
      * @var array
      */
     protected $fillable = [
-        'clave', 'description', 'udm', 'id_supply_category', 'id_supply_type', 'id_season', 'tolerance', 'stock_fixed', 'stock_variable', 'minimal_presentation', 'is_inventorial', 'is_product', 'is_auditable', 'is_direct_purchase', 'type', 'estatus', 'id_provider_primary', 'id_provider_second', 'id_provider_third'
+        'clave', 'description', 'udm', 'id_supply_category', 'id_supply_type', 'id_season', 'performance', 'tolerance', 'stock_fixed', 'stock_variable', 'minimal_presentation', 'is_inventorial', 'is_product', 'is_auditable', 'is_direct_purchase', 'type', 'estatus', 'average_cost', 'average_cost', 'last_variation', 'id_provider_primary', 'id_provider_second', 'id_provider_third'
     ];
 
     /**

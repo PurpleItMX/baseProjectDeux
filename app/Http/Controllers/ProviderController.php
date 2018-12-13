@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 
 use App\Provider;
-use App\SupplyCategory;
+use App\ProviderCategory;
+use App\ProviderType;
 
 class ProviderController extends Controller
 {
@@ -27,11 +28,25 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        $providers = Provider::all();
-        $supplyCategories = SupplyCategory::all();
-        return view('provider.index')
-        ->with('providers',$providers)
-        ->with('supplyCategories',$supplyCategories);
+        try{
+            $providers = Provider::all();
+            $providerCategories = ProviderCategory::all();
+            $providerTypes = ProviderType::all();
+            return view('provider.index')
+            ->with('providers',$providers)
+            ->with('providerCategories',$providerCategories)
+            ->with('providerTypes',$providerTypes);
+        }catch (QueryException $e){
+            $providers = Provider::all();
+            $providerCategories = ProviderCategory::all();
+            $providerTypes = ProviderType::all();
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('provider.index')
+            ->with('providers',$providers)
+            ->with('providerCategories',$providerCategories)
+            ->with('providerTypes',$providerTypes)
+            ->withErrors([$message]);
+       }
     }
 
      /**
@@ -39,10 +54,7 @@ class ProviderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-
-    }
+    public function create(){}
 
     /**
      * Show the form for edit SupplyType.
@@ -52,9 +64,6 @@ class ProviderController extends Controller
     public function update($id)
     {
         return $provider = Provider::findOrFail($id);
-        /*return view('supply-type.form')
-        ->with('supplyType',$supplyType)
-        ->with('supplyCategories',$supplyCategories);*/
     }
 
     /**
@@ -65,50 +74,76 @@ class ProviderController extends Controller
      */
     public function save(Request $request)
     {
-        $id = $request['id_provider'];
-        if($id == NULL){
-            $provider = new Provider();
-            $provider->clave = $request['clave'];
-            $provider->rfc = $request['rfc'];
-            $provider->name = $request['name'];
-            $provider->name_commercial = $request['name_commercial'];
-            $provider->type = $request['type'];
-            $provider->street = $request['street'];
-            $provider->number_ext = $request['number_ext'];
-            $provider->number_int = $request['number_int'];
-            $provider->colony = $request['colony'];
-            $provider->city = $request['city'];
-            $provider->state = $request['state'];
-            $provider->country = $request['country'];
-            $provider->zip_code = $request['zip_code'];
-            $provider->phone = $request['phone'];
-            $provider->email = "matthew890513@gmail.com";/*$request['email'];*/
-            $provider->estatus = ($request['estatus'] == "on")?1:0;
-        }else{
-            $provider = Provider::findOrFail($id);
-            $provider->clave = $request['clave'];
-            $provider->rfc = $request['rfc'];
-            $provider->name = $request['name'];
-            $provider->name_commercial = $request['name_commercial'];
-            $provider->type = $request['type'];
-            $provider->street = $request['street'];
-            $provider->number_ext = $request['number_ext'];
-            $provider->number_int = $request['number_int'];
-            $provider->colony = $request['colony'];
-            $provider->city = $request['city'];
-            $provider->state = $request['state'];
-            $provider->country = $request['country'];
-            $provider->zip_code = $request['zip_code'];
-            $provider->phone = $request['phone'];
-            $provider->email = "matthew890513@gmail.com";/*$request['email'];*/
-            $provider->estatus = ($request['estatus'] == "on")?1:0;      
-        }
-            $provider->save();
-        if($request['id_provider_redirect'] == 'true'){
-            return redirect()->action('ProviderController@index');
-         }else{
-            return Provider::all();
-        }
+        try{
+            $id = $request['id_provider'];
+            if($id == NULL){
+                $provider = new Provider();
+                $provider->clave = $request['clave'];
+                $provider->rfc = $request['rfc'];
+                $provider->name = $request['name'];
+                $provider->name_commercial = $request['name_commercial'];
+                $provider->type = $request['type'];
+                $provider->id_provider_category = $request['id_provider_category'];
+                $provider->id_provider_type = $request['id_provider_type'];
+                $provider->street = $request['street'];
+                $provider->number_ext = $request['number_ext'];
+                $provider->number_int = $request['number_int'];
+                $provider->colony = $request['colony'];
+                $provider->city = $request['city'];
+                $provider->state = $request['state'];
+                $provider->country = $request['country'];
+                $provider->zip_code = $request['zip_code'];
+                $provider->phone = $request['phone'];
+                $provider->email = $request['email'];
+                $provider->estatus = ($request['estatus'] == "on")?1:0;
+                $message = "Registro Creado";
+            }else{
+                $provider = Provider::findOrFail($id);
+                $provider->clave = $request['clave'];
+                $provider->rfc = $request['rfc'];
+                $provider->name = $request['name'];
+                $provider->name_commercial = $request['name_commercial'];
+                $provider->type = $request['type'];
+                $provider->id_provider_category = $request['id_provider_category'];
+                $provider->id_provider_type = $request['id_provider_type'];
+                $provider->street = $request['street'];
+                $provider->number_ext = $request['number_ext'];
+                $provider->number_int = $request['number_int'];
+                $provider->colony = $request['colony'];
+                $provider->city = $request['city'];
+                $provider->state = $request['state'];
+                $provider->country = $request['country'];
+                $provider->zip_code = $request['zip_code'];
+                $provider->phone = $request['phone'];
+                $provider->email = $request['email'];
+                $provider->estatus = ($request['estatus'] == "on")?1:0;    
+                $message = "Registro Actualizado";  
+            }
+                $provider->save();
+            if($request['id_provider_redirect'] == 'true'){
+                $providers = Provider::all();
+                $providerCategories = ProviderCategory::all();
+                $providerTypes = ProviderType::all();
+                return view('provider.index')
+                ->with('providers',$providers)
+                ->with('providerCategories',$providerCategories)
+                ->with('providerTypes',$providerTypes)
+                ->withSuccess($message);
+             }else{
+                return Provider::all();
+            }
+
+        }catch (QueryException $e){
+            $providers = Provider::all();
+            $providerCategories = ProviderCategory::all();
+            $providerTypes = ProviderType::all();
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('provider.index')
+            ->with('providers',$providers)
+            ->with('providerCategories',$providerCategories)
+            ->with('providerTypes',$providerTypes)
+            ->withErrors([$message]);
+       }
     }
 
     /**
@@ -118,7 +153,44 @@ class ProviderController extends Controller
      */
     public function delete($id)
     {
-    	SupplyType::deleteById($id);
-        return redirect()->action('SupplyTypeController@index');
+        try{
+    	   $provider = Provider::findOrFail($id);
+           $provider->delete();
+            $providers = Provider::all();
+            $providerCategories = ProviderCategory::all();
+            $providerTypes = ProviderType::all();
+            return view('provider.index')
+            ->with('providers',$providers)
+            ->with('providerCategories',$providerCategories)
+            ->with('providerTypes',$providerTypes)
+            ->withSuccess('Registro Borrado');
+        }catch (QueryException $e){
+            $providers = Provider::all();
+            $providerCategories = ProviderCategory::all();
+            $providerTypes = ProviderType::all();
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return view('provider.index')
+            ->with('providers',$providers)
+            ->with('providerCategories',$providerCategories)
+            ->with('providerTypes',$providerTypes)
+            ->withErrors([$message]);
+       }
+    }
+
+         /**
+     * Action search if the data exist in the bd.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        if($request['id'] != NULL){
+            $provider = Provider::where($request['column'], 'like', $request['val'])
+            ->where('id_provider', '!=', $request['id'])->get();
+        }else{
+            $provider = Provider::where($request['column'], 'like', $request['val'])->get();
+        }
+
+        return $provider;
     }
 }
