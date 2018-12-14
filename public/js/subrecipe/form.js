@@ -64,7 +64,7 @@ $(document).ready(function(){
 				$("#supplies").val(JSON.stringify(supplies));
 				$("#saveSubrecipe").submit();
 			}else{
-				messages('error','es requerido al menos un almacén');
+				messages('error','es requerido al menos un insumo o subreceta');
 			}
 		}
 	});
