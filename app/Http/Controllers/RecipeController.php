@@ -26,17 +26,9 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        try{
-             $recipes = Recipe::all();
-            return view('recipe.index')
-            ->with('recipes',$recipes);
-        }catch (QueryException $e){
-            $recipes = Recipe::all();
-            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('recipe.index')
-            ->with('recipes',$recipes)
-            ->withErrors([$message]);
-        }
+         $recipes = Recipe::all();
+        return view('recipe.index')
+        ->with('recipes',$recipes);
     }
 
      /**
@@ -138,19 +130,13 @@ class RecipeController extends Controller
             }
             
             if($request['id_recipe_redirect'] == 'true'){
-                $recipes = Recipe::all();
-                return view('recipe.index')
-                ->with('recipes',$recipes)
-                ->withSuccess($message);
+                return redirect('/recipes')->with('success', $message);
             }else{
                 return Recipe::all();
             }
         }catch (QueryException $e){
-            $recipes = Recipe::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('recipe.index')
-            ->with('recipes',$recipes)
-            ->withErrors([$message]);
+            return redirect('/recipes')->with('error', $message);
        }
     }
 
@@ -165,16 +151,10 @@ class RecipeController extends Controller
      try {
             $recipe = Recipe::findOrFail($id);
             $recipe->delete();
-            $recipes = Recipe::all();
-            return view('recipe.index')
-            ->with('recipes',$recipes)
-            ->withSuccess('Registro Borrado');
+            return redirect('/recipes')->with('success', 'Registro Borrado');
         }catch (QueryException $e){
-            $recipes = Recipe::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('recipe.index')
-            ->with('recipes',$recipes)
-            ->withErrors([$message]);
+            return redirect('/recipes')->with('error', $message);
        }
     }
 

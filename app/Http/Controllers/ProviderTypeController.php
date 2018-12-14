@@ -26,25 +26,13 @@ class ProviderTypeController extends Controller
      */
     public function index()
     {
-        try{
-            $providerTypes = ProviderType::all();
-            $providerCategories = ProviderCategory::all()->where('estatus',1);
-            $providerCategoriesAll = ProviderCategory::all();
-            return view('provider-type.index')
-            ->with('providerTypes',$providerTypes)
-            ->with('providerCategoriesAll',$providerCategoriesAll)
-            ->with('providerCategories',$providerCategories);
-        }catch (QueryException $e){
-            $providerTypes = ProviderType::all();
-            $providerCategories = ProviderCategory::all()->where('estatus',1);
-            $providerCategoriesAll = ProviderCategory::all();
-            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('provider-type.index')
-            ->with('providerTypes',$providerTypes)
-            ->with('providerCategoriesAll',$providerCategoriesAll)
-            ->with('providerCategories',$providerCategories)
-            ->withErrors([$message]);
-       }
+        $providerTypes = ProviderType::all();
+        $providerCategories = ProviderCategory::all()->where('estatus',1);
+        $providerCategoriesAll = ProviderCategory::all();
+        return view('provider-type.index')
+        ->with('providerTypes',$providerTypes)
+        ->with('providerCategoriesAll',$providerCategoriesAll)
+        ->with('providerCategories',$providerCategories);
     }
 
      /**
@@ -91,27 +79,13 @@ class ProviderTypeController extends Controller
             }
                 $providerType->save();
             if($request['id_provider_type_redirect'] == 'true'){
-                $providerTypes = ProviderType::all();
-                $providerCategories = ProviderCategory::all()->where('estatus',1);
-                $providerCategoriesAll = ProviderCategory::all();
-                return view('provider-type.index')
-                ->with('providerTypes',$providerTypes)
-                ->with('providerCategoriesAll',$providerCategoriesAll)
-                ->with('providerCategories',$providerCategories)
-                ->withSuccess($message);
+                return redirect('/provider-types')->with('success', $message);
              }else{
                 return ProviderType::all();
             }
         }catch (QueryException $e){
-            $providerTypes = ProviderType::all();
-            $providerCategories = ProviderCategory::all()->where('estatus',1);
-            $providerCategoriesAll = ProviderCategory::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('provider-type.index')
-            ->with('providerTypes',$providerTypes)
-            ->with('providerCategoriesAll',$providerCategoriesAll)
-            ->with('providerCategories',$providerCategories)
-            ->withErrors([$message]);
+            return redirect('/provider-types')->with('error', $message);
        }
     }
 
@@ -125,24 +99,10 @@ class ProviderTypeController extends Controller
         try{
     	   $providerType = ProviderType::findOrFail($id);
     	   $providerType->delete();
-           $providerTypes = ProviderType::all();
-           $providerCategories = ProviderCategory::all()->where('estatus',1);
-           $providerCategoriesAll = ProviderCategory::all();
-           return view('provider-type.index')
-            ->with('providerTypes',$providerTypes)
-            ->with('providerCategoriesAll',$providerCategoriesAll)
-            ->with('providerCategories',$providerCategories)
-            ->withErrors("Regitro Borrado");
+           return redirect('/provider-types')->with('success', "Regitro Borrado");
         }catch (QueryException $e){
-            $providerTypes = ProviderType::all();
-            $providerCategories = ProviderCategory::all()->where('estatus',1);
-            $providerCategoriesAll = ProviderCategory::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('provider-type.index')
-            ->with('providerTypes',$providerTypes)
-            ->with('providerCategoriesAll',$providerCategoriesAll)
-            ->with('providerCategories',$providerCategories)
-            ->withErrors([$message]);
+            return redirect('/provider-types')->with('error', $message);
        }
     }
 

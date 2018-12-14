@@ -27,25 +27,13 @@ class ProductController extends Controller
      */
     public function index()
     {
-        try{
-            $products = Product::all();
-            $productCategories = ProductCategory::all()->where('estatus',1);
-            $productTypes = ProductType::all()->where('estatus',1);
-            return view('product.index')
-            ->with('products',$products)
-            ->with('productCategories',$productCategories)
-            ->with('productTypes',$productTypes);
-        }catch (QueryException $e){
-        	$products = Product::all();
-            $productCategories = ProductCategory::all()->where('estatus',1);
-            $productTypes = ProductType::all()->where('estatus',1);
-            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('product.index')
-            ->with('products',$products)
-            ->with('productCategories',$productCategories)
-            ->with('productTypes',$productTypes)
-            ->withErrors([$message]);
-        }
+        $products = Product::all();
+        $productCategories = ProductCategory::all()->where('estatus',1);
+        $productTypes = ProductType::all()->where('estatus',1);
+        return view('product.index')
+        ->with('products',$products)
+        ->with('productCategories',$productCategories)
+        ->with('productTypes',$productTypes);
     }
 
      /**
@@ -115,27 +103,13 @@ class ProductController extends Controller
             $product->save();
             
             if($request['id_product_redirect'] == 'true'){
-            $products = Product::all();
-            $productCategories = ProductCategory::all()->where('estatus',1);
-            $productTypes = ProductType::all()->where('estatus',1);
-                return view('product.index')
-            	->with('products',$products)
-            	->with('productCategories',$productCategories)
-            	->with('productTypes',$productTypes)
-                ->withSuccess($message);
+                return redirect('/products')->with('success', $message);
             }else{
                 return Supply::all();
             }
         }catch (QueryException $e){
-            $products = Product::all();
-            $productCategories = ProductCategory::all()->where('estatus',1);
-            $productTypes = ProductType::all()->where('estatus',1);
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('product.index')
-            ->with('products',$products)
-            ->with('productCategories',$productCategories)
-            ->with('productTypes',$productTypes)
-            ->withErrors([$message]);
+            return redirect('/products')->with('error', $message);
        }
     }
 
@@ -147,27 +121,14 @@ class ProductController extends Controller
     public function delete($id)
     {
         try {
-            $products = Product::all();
-            $productCategories = ProductCategory::all()->where('estatus',1);
-            $productTypes = ProductType::all()->where('estatus',1);
-            return view('product.index')
-            ->with('products',$products)
-            ->with('productCategories',$productCategories)
-            ->with('productTypes',$productTypes)
-            ->withSuccess('Registro Borrado');
+            $product = Product::findOrFail($id);
+            $product->delete();
+            return redirect('/products')->with('success', 'Registro Borrado');        
         }catch (QueryException $e){
-            $products = Product::all();
-            $productCategories = ProductCategory::all()->where('estatus',1);
-            $productTypes = ProductType::all()->where('estatus',1);
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('product.index')
-            ->with('products',$products)
-            ->with('productCategories',$productCategories)
-            ->with('productTypes',$productTypes)
-            ->withErrors([$message]);
+            return redirect('/products')->with('error', $message);
        }
     }
-
 
     /**
      * Action search if the data exist in the bd.

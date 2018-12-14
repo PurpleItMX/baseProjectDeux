@@ -26,21 +26,11 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        try{
-            $services = Service::all();
-            $serviceCategories = ServiceCategory::all()->where('estatus', 1);
-            return view('service.index')
-            ->with('services',$services)
-            ->with('serviceCategories',$serviceCategories);
-        }catch (QueryException $e){
-            $services = Service::all();
-            $serviceCategories = ServiceCategory::all()->where('estatus', 1);
-            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('service.index')
-            ->with('services',$services)
-            ->with('serviceCategories',$serviceCategories)
-            ->withErrors([$message]);
-        }
+        $services = Service::all();
+        $serviceCategories = ServiceCategory::all()->where('estatus', 1);
+        return view('service.index')
+        ->with('services',$services)
+        ->with('serviceCategories',$serviceCategories);
     }
 
      /**
@@ -95,23 +85,13 @@ class ServiceController extends Controller
             }
                 $service->save();
             if($request['id_service_redirect'] == 'true'){
-                $services = Service::all();
-                $serviceCategories = ServiceCategory::all()->where('estatus', 1);
-                return view('service.index')
-                ->with('services',$services)
-                ->with('serviceCategories',$serviceCategories)
-                ->withSuccess($message);
+                return redirect('/services')->with('success', $message);
             }else{
                 return Service::all();
             }
         }catch (QueryException $e){
-            $services = Service::all();
-            $serviceCategories = ServiceCategory::all()->where('estatus', 1);
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('service.index')
-            ->with('services',$services)
-            ->with('serviceCategories',$serviceCategories)
-            ->withErrors([$message]);
+            return redirect('/services')->with('error', $message);
        }
     }
 
@@ -125,20 +105,10 @@ class ServiceController extends Controller
         try {
             $service = Service::findOrFail($id);
             $service->delete();
-            $services = Service::all();
-            $serviceCategories = ServiceCategory::all()->where('estatus', 1);
-            return view('service.index')
-            ->with('services',$services)
-            ->with('serviceCategories',$serviceCategories)
-            ->withSuccess('Registro Borrado');
+            return redirect('/services')->with('success', 'Registro Borrado');
         }catch (QueryException $e){
-            $services = Service::all();
-            $serviceCategories = ServiceCategory::all()->where('estatus', 1);
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('service.index')
-            ->with('services',$services)
-            ->with('serviceCategories',$serviceCategories)
-            ->withErrors([$message]);
+            return redirect('/services')->with('error', $message);
        }
     }
 

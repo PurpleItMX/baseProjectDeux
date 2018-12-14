@@ -25,15 +25,9 @@ class SeasonController extends Controller
      */
     public function index()
     {   
-        try{
-            $seasons = Season::all();
-            return view('season.index')
-            ->with('seasons',$seasons);
-        }catch (QueryException $e){
-            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('season.index')
-            ->withErrors([$message]);
-       }
+        $seasons = Season::all();
+        return view('season.index')
+        ->with('seasons',$seasons);
     }
 
      /**
@@ -82,19 +76,13 @@ class SeasonController extends Controller
             }
             $season->save();
             if($request['id_season_redirect'] == 'true'){
-                $seasons = Season::all();
-                return view('season.index')
-                ->with('seasons',$seasons)
-                ->withSuccess($message);
+                return redirect('/seasons')->with('success', $message);
             }else{
                 return Season::all()->where('estatus',1);
             }
          }catch (QueryException $e){
-            $seasons = Season::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('season.index')
-            ->with('seasons',$seasons)
-            ->withErrors([$message]);
+            return redirect('/seasons')->with('error', $message);
        }
     }
 
@@ -108,16 +96,10 @@ class SeasonController extends Controller
         try {
             $season = Season::findOrFail($id);
             $season->delete();
-            $seasons = Season::all();
-            return view('season.index')
-            ->with('seasons',$seasons)
-            ->withSuccess('Registro Borrado');
+            return redirect('/seasons')->with('success', 'Registro Borrado');
         }catch (QueryException $e){
-            $seasons = Season::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('season.index')
-            ->with('seasons',$seasons)
-            ->withErrors([$message]);
+            return redirect('/seasons')->with('error', $message);
        }
     }
 

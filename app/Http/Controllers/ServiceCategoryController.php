@@ -25,15 +25,9 @@ class ServiceCategoryController extends Controller
      */
     public function index()
     {
-        try{
-            $serviceCategories = ServiceCategory::all();
-            return view('service-category.index')
-            ->with('serviceCategories',$serviceCategories);
-        }catch (QueryException $e){
-            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('service-type.index')
-            ->withErrors([$message]);
-        }
+        $serviceCategories = ServiceCategory::all();
+        return view('service-category.index')
+        ->with('serviceCategories',$serviceCategories);
     }
 
      /**
@@ -78,19 +72,13 @@ class ServiceCategoryController extends Controller
             }
                 $serviceCategory->save();
             if($request['id_service_category_redirect'] == 'true'){
-                $serviceCategories = ServiceCategory::all();
-                return view('service-category.index')
-                ->with('serviceCategories',$serviceCategories)
-                ->withSuccess($message);
+                return redirect('/service-categories')->with('success', $message);
             }else{
                 return ServiceCategory::all();
             }
         }catch (QueryException $e){
-            $serviceCategories = ServiceCategory::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('service-category.index')
-            ->with('serviceCategories',$serviceCategories)
-            ->withErrors([$message]);
+            return redirect('/service-categories')->with('error', $message);
        }
     }
 
@@ -104,16 +92,10 @@ class ServiceCategoryController extends Controller
         try {
             $serviceCategory = ServiceCategory::findOrFail($id);
             $serviceCategory->delete();
-            $serviceCategories = ServiceCategory::all();
-            return view('service-category.index')
-            ->with('serviceCategories',$serviceCategories)
-            ->withSuccess('Registro Borrado');
+            return redirect('/service-categories')->with('success', 'Registro Borrado');
         }catch (QueryException $e){
-            $serviceCategories = ServiceCategory::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('service-category.index')
-            ->with('serviceCategories',$serviceCategories)
-            ->withErrors([$message]);
+            return redirect('/service-categories')->with('error', $message);
        }
     }
 

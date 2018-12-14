@@ -25,15 +25,9 @@ class ProviderCategoryController extends Controller
      */
     public function index()
     {
-        try{
-            $providerCategories = ProviderCategory::all();
-            return view('provider-category.index')
-            ->with('providerCategories',$providerCategories);
-        }catch (QueryException $e){
-            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('provider-type.index')
-            ->withErrors([$message]);
-        }
+        $providerCategories = ProviderCategory::all();
+        return view('provider-category.index')
+        ->with('providerCategories',$providerCategories);
     }
 
      /**
@@ -78,19 +72,13 @@ class ProviderCategoryController extends Controller
             }
                 $providerCategory->save();
             if($request['id_provider_category_redirect'] == 'true'){
-                $providerCategories = ProviderCategory::all();
-                return view('provider-category.index')
-                ->with('providerCategories',$providerCategories)
-                ->withSuccess($message);
+                return redirect('/provider-categories')->with('success', $message);
             }else{
                 return ProviderCategory::all();
             }
         }catch (QueryException $e){
-            $providerCategories = ProviderCategory::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('provider-category.index')
-            ->with('providerCategories',$providerCategories)
-            ->withErrors([$message]);
+            return redirect('/provider-categories')->with('error', $message);
        }
     }
 
@@ -104,16 +92,10 @@ class ProviderCategoryController extends Controller
         try {
             $providerCategory = ProviderCategory::findOrFail($id);
             $providerCategory->delete();
-            $providerCategories = ProviderCategory::all();
-            return view('provider-category.index')
-            ->with('providerCategories',$providerCategories)
-            ->withSuccess('Registro Borrado');
+            return redirect('/provider-categories')->with('success', 'Registro Borrado');
         }catch (QueryException $e){
-            $providerCategories = ProviderCategory::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('provider-category.index')
-            ->with('providerCategories',$providerCategories)
-            ->withErrors([$message]);
+            return redirect('/provider-categories')->with('error', $message);
        }
     }
 

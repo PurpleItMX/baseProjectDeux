@@ -26,25 +26,13 @@ class ServiceTypeController extends Controller
      */
     public function index()
     {
-        try{
-            $serviceTypes = ServiceType::all();
-            $serviceCategoriesAll = ServiceCategory::all();
-            $serviceCategories = ServiceCategory::all()->where('estatus',1);
-            return view('service-type.index')
-            ->with('serviceTypes',$serviceTypes)
-            ->with('serviceCategories',$serviceCategories)
-            ->with('serviceCategoriesAll',$serviceCategoriesAll);
-        }catch (QueryException $e){
-            $serviceTypes = ServiceType::all();
-            $serviceCategoriesAll = ServiceCategory::all();
-            $serviceCategories = ServiceCategory::all()->where('estatus',1);
-            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('product-type.index')
-            ->with('serviceTypes',$serviceTypes)
-            ->with('serviceCategories',$serviceCategories)
-            ->with('serviceCategoriesAll',$serviceCategoriesAll)
-            ->withErrors([$message]);
-       }
+        $serviceTypes = ServiceType::all();
+        $serviceCategoriesAll = ServiceCategory::all();
+        $serviceCategories = ServiceCategory::all()->where('estatus',1);
+        return view('service-type.index')
+        ->with('serviceTypes',$serviceTypes)
+        ->with('serviceCategories',$serviceCategories)
+        ->with('serviceCategoriesAll',$serviceCategoriesAll);
     }
 
      /**
@@ -91,26 +79,13 @@ class ServiceTypeController extends Controller
             }
                 $serviceType->save();
             if($request['id_service_type_redirect'] == 'true'){
-                $serviceTypes = ServiceType::all();
-	            $serviceCategoriesAll = ServiceCategory::all();
-	            $serviceCategories = ServiceCategory::all()->where('estatus',1);
-	            return view('service-type.index')
-	            ->with('serviceTypes',$serviceTypes)
-	            ->with('serviceCategories',$serviceCategories)
-	            ->with('serviceCategoriesAll',$serviceCategoriesAll)
-                ->withSuccess($message);
+                return redirect('/service-types')->with('success', $message);
              }else{
                 return ServiceType::all()->where('estatus',1);
             }
         }catch (QueryException $e){
-            $serviceTypes = ServiceType::all();
-            $serviceCategoriesAll = ServiceCategory::all();
-            $serviceCategories = ServiceCategory::all()->where('estatus',1);
-            return view('service-type.index')
-            ->with('serviceTypes',$serviceTypes)
-            ->with('serviceCategories',$serviceCategories)
-            ->with('serviceCategoriesAll',$serviceCategoriesAll)
-            ->withErrors([$message]);
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return redirect('/service-types')->with('error', $message);
        }
     }
 
@@ -124,24 +99,10 @@ class ServiceTypeController extends Controller
         try{
             $serviceType = ServiceType::findOrFail($id);
             $serviceType->delete();
-            $serviceTypes = ServiceType::all();
-            $serviceCategoriesAll = ServiceCategory::all();
-            $serviceCategories = ServiceCategory::all()->where('estatus',1);
-            return view('service-type.index')
-            ->with('serviceTypes',$serviceTypes)
-            ->with('serviceCategories',$serviceCategories)
-            ->with('serviceCategoriesAll',$serviceCategoriesAll)
-            ->withSuccess('Registro Borrado');
+            return redirect('/service-types')->with('success', 'Registro Borrado');
         }catch (QueryException $e){
-            $serviceTypes = ServiceType::all();
-            $serviceCategoriesAll = ServiceCategory::all();
-            $serviceCategories = ServiceCategory::all()->where('estatus',1);
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('service-type.index')
-            ->with('serviceTypes',$serviceTypes)
-            ->with('serviceCategories',$serviceCategories)
-            ->with('serviceCategoriesAll',$serviceCategoriesAll)
-            ->withErrors([$message]);
+            return redirect('/service-types')->with('error', $message);
        }
     }
 

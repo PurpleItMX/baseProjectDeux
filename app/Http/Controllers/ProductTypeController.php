@@ -26,25 +26,13 @@ class ProductTypeController extends Controller
      */
     public function index()
     {
-        try{
-            $productTypes = ProductType::all();
-            $productCategoriesAll = ProductCategory::all();
-            $productCategories = ProductCategory::all()->where('estatus',1);
-            return view('product-type.index')
-            ->with('productTypes',$productTypes)
-            ->with('productCategories',$productCategories)
-            ->with('productCategoriesAll',$productCategoriesAll);
-        }catch (QueryException $e){
-            $productTypes = ProductType::all();
-            $productCategoriesAll = ProductCategory::all();
-            $productCategories = ProductCategory::all()->where('estatus',1);
-            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('product-type.index')
-            ->with('productTypes',$productTypes)
-            ->with('productCategories',$productCategories)
-            ->with('productCategoriesAll',$productCategoriesAll)
-            ->withErrors([$message]);
-       }
+        $productTypes = ProductType::all();
+        $productCategoriesAll = ProductCategory::all();
+        $productCategories = ProductCategory::all()->where('estatus',1);
+        return view('product-type.index')
+        ->with('productTypes',$productTypes)
+        ->with('productCategories',$productCategories)
+        ->with('productCategoriesAll',$productCategoriesAll);
     }
 
      /**
@@ -76,42 +64,24 @@ class ProductTypeController extends Controller
             $id = $request['id_product_type'];
             if($id == NULL){
                 $productType = new ProductType();
-    	        $productType->clave = $request['clave'];
-    	        $productType->description = $request['description'];
-    	        $productType->id_product_category = $request['id_product_category'];
-    	        $productType->estatus = ($request['estatus'] == "on")?1:0;
                 $message = "Registro Creado";
             }else{
                 $productType = ProductType::findOrFail($id);
-                $productType->clave = $request['clave'];
-                $productType->description = $request['description'];
-                $productType->id_product_category = $request['id_product_category'];
-                $productType->estatus = ($request['estatus'] == "on")?1:0;   
                 $message = "Registro Actualizado";    
             }
-                $productType->save();
+            $productType->clave = $request['clave'];
+            $productType->description = $request['description'];
+            $productType->id_product_category = $request['id_product_category'];
+            $productType->estatus = ($request['estatus'] == "on")?1:0;   
+            $productType->save();
             if($request['id_product_type_redirect'] == 'true'){
-                $productCategoriesAll = ProductCategory::all();
-                $productTypes = ProductType::all();
-                $productCategories = ProductCategory::all()->where('estatus',1);
-                return view('product-type.index')
-                ->with('productTypes',$productTypes)
-                ->with('productCategories',$productCategories)
-                ->with('productCategoriesAll',$productCategoriesAll)
-                ->withSuccess($message);
+                return redirect('/product-types')->with('success', $message);
              }else{
                 return ProductType::all()->where('estatus',1);
             }
         }catch (QueryException $e){
-            $supplyCategoriesAll = SupplyCategory::all();
-            $supplyTypes = ProductType::all();
-            $supplyCategories = SupplyCategory::all()->where('estatus',1);
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('product-type.index')
-            ->with('productTypes',$productTypes)
-            ->with('productCategories',$productCategories)
-            ->with('productCategoriesAll',$productCategoriesAll)
-            ->withErrors([$message]);
+            return redirect('/product-types')->with('error', $message);
        }
     }
 
@@ -123,26 +93,10 @@ class ProductTypeController extends Controller
     public function delete($id)
     {
         try{
-            $supplyType = SupplyType::findOrFail($id);
-            $supplyType->delete();
-            $supplyTypes = SupplyType::all();
-            $supplyCategoriesAll = SupplyCategory::all();
-            $supplyCategories = SupplyCategory::all()->where('estatus',1);
-            return view('supply-type.index')
-            ->with('supplyTypes',$supplyTypes)
-            ->with('supplyCategories',$supplyCategories)
-            ->with('supplyCategoriesAll',$supplyCategoriesAll)
-            ->withSuccess('Registro Borrado');
+            return redirect('/product-types')->with('success', 'Registro Borrado');
         }catch (QueryException $e){
-            $supplyTypes = SupplyType::all();
-            $supplyCategoriesAll = SupplyCategory::all();
-            $supplyCategories = SupplyCategory::all()->where('estatus',1);
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('supply-type.index')
-            ->with('supplyTypes',$supplyTypes)
-            ->with('supplyCategories',$supplyCategories)
-            ->with('supplyCategoriesAll',$supplyCategoriesAll)
-            ->withErrors([$message]);
+            return redirect('/product-types')->with('error', $message);
        }
     }
 

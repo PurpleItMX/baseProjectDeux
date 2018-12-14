@@ -25,16 +25,9 @@ class SupplyCategoryController extends Controller
      */
     public function index()
     {
-        try{
-            $supplyCategories = SupplyCategory::all();
-            return view('supply-category.index')
-            ->with('supplyCategories',$supplyCategories);
-        }catch (QueryException $e){
-            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('supply-category.index')
-            ->withErrors([$message]);
-        }
-
+        $supplyCategories = SupplyCategory::all();
+        return view('supply-category.index')
+        ->with('supplyCategories',$supplyCategories);
     }
 
      /**
@@ -82,19 +75,13 @@ class SupplyCategoryController extends Controller
                 $supplyCategory->save();
             
             if($request['id_supply_category_redirect'] == 'true'){
-                $supplyCategories = SupplyCategory::all();
-                return view('supply-category.index')
-                ->with('supplyCategories',$supplyCategories)
-                ->withSuccess($message);
+                return redirect('/supply-categories')->with('success', $message);
             }else{
                 return SupplyCategory::all()->where('estatus',1);
             }
         }catch (QueryException $e){
-            $supplyCategories = SupplyCategory::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('supply-category.index')
-            ->with('supplyCategories',$supplyCategories)
-            ->withErrors([$message]);
+            return redirect('/supply-categories')->with('error', $message);
        }
     }
 
@@ -108,16 +95,10 @@ class SupplyCategoryController extends Controller
         try {
             $supplyCategory = SupplyCategory::findOrFail($id);
             $supplyCategory->delete();
-            $supplyCategories = SupplyCategory::all();
-            return view('supply-category.index')
-            ->with('supplyCategories',$supplyCategories)
-            ->withSuccess('Registro Borrado');
+            return redirect('/supply-categories')->with('success', 'Registro Borrado');
         }catch (QueryException $e){
-            $supplyCategories = SupplyCategory::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('supply-category.index')
-            ->with('supplyCategories',$supplyCategories)
-            ->withErrors([$message]);
+            return redirect('/supply-categories')->with('error', $message);
        }
     }
 

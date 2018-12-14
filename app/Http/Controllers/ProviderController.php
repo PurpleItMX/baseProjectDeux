@@ -28,25 +28,13 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        try{
-            $providers = Provider::all();
-            $providerCategories = ProviderCategory::all();
-            $providerTypes = ProviderType::all();
-            return view('provider.index')
-            ->with('providers',$providers)
-            ->with('providerCategories',$providerCategories)
-            ->with('providerTypes',$providerTypes);
-        }catch (QueryException $e){
-            $providers = Provider::all();
-            $providerCategories = ProviderCategory::all();
-            $providerTypes = ProviderType::all();
-            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('provider.index')
-            ->with('providers',$providers)
-            ->with('providerCategories',$providerCategories)
-            ->with('providerTypes',$providerTypes)
-            ->withErrors([$message]);
-       }
+        $providers = Provider::all();
+        $providerCategories = ProviderCategory::all();
+        $providerTypes = ProviderType::all();
+        return view('provider.index')
+        ->with('providers',$providers)
+        ->with('providerCategories',$providerCategories)
+        ->with('providerTypes',$providerTypes);
     }
 
      /**
@@ -121,28 +109,13 @@ class ProviderController extends Controller
             }
                 $provider->save();
             if($request['id_provider_redirect'] == 'true'){
-                $providers = Provider::all();
-                $providerCategories = ProviderCategory::all();
-                $providerTypes = ProviderType::all();
-                return view('provider.index')
-                ->with('providers',$providers)
-                ->with('providerCategories',$providerCategories)
-                ->with('providerTypes',$providerTypes)
-                ->withSuccess($message);
+                return redirect('/providers')->with('success', $message);
              }else{
                 return Provider::all();
             }
-
         }catch (QueryException $e){
-            $providers = Provider::all();
-            $providerCategories = ProviderCategory::all();
-            $providerTypes = ProviderType::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('provider.index')
-            ->with('providers',$providers)
-            ->with('providerCategories',$providerCategories)
-            ->with('providerTypes',$providerTypes)
-            ->withErrors([$message]);
+            return redirect('/providers')->with('error', $message);
        }
     }
 
@@ -154,26 +127,12 @@ class ProviderController extends Controller
     public function delete($id)
     {
         try{
-    	   $provider = Provider::findOrFail($id);
-           $provider->delete();
-            $providers = Provider::all();
-            $providerCategories = ProviderCategory::all();
-            $providerTypes = ProviderType::all();
-            return view('provider.index')
-            ->with('providers',$providers)
-            ->with('providerCategories',$providerCategories)
-            ->with('providerTypes',$providerTypes)
-            ->withSuccess('Registro Borrado');
+    	    $provider = Provider::findOrFail($id);
+            $provider->delete();
+            return redirect('/providers')->with('error', 'Registro Borrado');
         }catch (QueryException $e){
-            $providers = Provider::all();
-            $providerCategories = ProviderCategory::all();
-            $providerTypes = ProviderType::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('provider.index')
-            ->with('providers',$providers)
-            ->with('providerCategories',$providerCategories)
-            ->with('providerTypes',$providerTypes)
-            ->withErrors([$message]);
+            return redirect('/providers')->with('error', $message);
        }
     }
 

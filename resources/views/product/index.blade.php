@@ -36,9 +36,9 @@
       						<button type="button" class="btn btn-default btn-sm search-product" data-id="{{ $product->id_product }}">
       							<i class="fa fa-pencil" aria-hidden="true"></i>
       						</button>
-      						<a type="button" class="btn btn-danger btn-sm" href="{{ url('/product/delete/'.$product->id_product)}}">
+      						<!--<a type="button" class="btn btn-danger btn-sm" href="{{ url('/product/delete/'.$product->id_product)}}">
       							<i class="fa fa-trash-o" aria-hidden="true"></i>
-      						</a>
+      						</a>-->
       					</td>
       				</tr>
       			@endforeach

@@ -30,17 +30,9 @@ class ProjectionSaleController extends Controller
      */
     public function index()
     {
-    	try{
-    		$projectionSales = ProjectionSale::all();
-    		return view('projection-sale.index')
-    		->with('projectionSales',$projectionSales);
-    	}catch (QueryException $e){
-    		$projectionSale = ProjectionSale::all();
-			$message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-			return view('projection-sale.index')
-            ->with('projectionSale',$projectionSale)
-            ->withErrors([$message]);
-    	}
+		$projectionSales = ProjectionSale::all();
+		return view('projection-sale.index')
+		->with('projectionSales',$projectionSales);
     }
 
     /**
@@ -144,20 +136,14 @@ class ProjectionSaleController extends Controller
 
             DB::commit();
             if($request['id_projection_sale_redirect'] == 'true'){
-            	$projectionSale = ProjectionSale::all();
-    			return view('projection-sale.index')
-    			->with('projectionSale',$projectionSale)
-                ->withSuccess($message);
+            	return redirect('/projection-sales')->with('success', $message);
             }else{
                 return ProjectionSale::all()->where('estatus',1);
             }
          }catch (QueryException $e){
          	DB::rollBack();
-            $projectionSale = ProjectionSale::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('projection-sale.index')
-            ->with('projectionSale',$projectionSale)
-            ->withErrors([$message]);
+            return redirect('/projection-sales')->with('error', $message);
        }
     }
 
@@ -180,17 +166,11 @@ class ProjectionSaleController extends Controller
             $projectionSale->delete();
             DB::commit();
 
-            $projectionSale = ProjectionSale::all();
-            return view('projection-sale.index')
-            ->with('projectionSale',$projectionSale)
-            ->withSuccess('Registro Borrado');
+            return redirect('/projection-sales')->with('success', 'Registro Borrado');
         }catch (QueryException $e){
         	DB::rollBack();
-            $projectionSale = ProjectionSale::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('projection-sale.index')
-            ->with('projectionSale',$projectionSale)
-            ->withErrors([$message]);
+            return redirect('/projection-sales')->with('error', $message);
        }
     }
 

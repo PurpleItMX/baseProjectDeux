@@ -26,15 +26,9 @@ class SubrecipeController extends Controller
      */
     public function index()
     {
-        try{
-            $subrecipes = Subrecipe::all();
-            return view('subrecipe.index')
-            ->with('subrecipes',$subrecipes);
-        }catch (QueryException $e){
-            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('subrecipe.index')
-            ->withErrors([$message]);
-        }
+        $subrecipes = Subrecipe::all();
+        return view('subrecipe.index')
+        ->with('subrecipes',$subrecipes);
     }
 
      /**
@@ -120,19 +114,13 @@ class SubrecipeController extends Controller
             }
             
             if($request['id_subrecipe_redirect'] == 'true'){
-            	$subrecipes = Subrecipe::all();
-            	return view('subrecipe.index')
-            	->with('subrecipes',$subrecipes)
-                ->withSuccess($message);
+            	return redirect('/subrecipes')->with('success', $message);
             }else{
                 return Subrecipe::all();
             }
         }catch (QueryException $e){
-            $subrecipes = Subrecipe::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('subrecipe.index')
-            ->with('subrecipes',$subrecipes)
-            ->withErrors([$message]);
+            return redirect('/subrecipes')->with('error', $message);
        }
     }
 
@@ -146,16 +134,10 @@ class SubrecipeController extends Controller
         try {
             $subrecipe = Subrecipe::findOrFail($id);
             $subrecipe->delete();
-            $subrecipes = Subrecipe::all();
-            return view('subrecipe.index')
-            ->with('subrecipes',$subrecipes)
-            ->withSuccess('Registro Borrado');
+            return redirect('/subrecipes')->with('success', 'Registro Borrado');
         }catch (QueryException $e){
-            $subrecipes = Subrecipe::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('subrecipe.index')
-            ->with('subrecipes',$subrecipes)
-            ->withErrors([$message]);
+            return redirect('/subrecipes')->with('error', $message);
        }
     }
 

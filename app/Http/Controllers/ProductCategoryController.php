@@ -25,16 +25,9 @@ class ProductCategoryController extends Controller
      */
     public function index()
     {
-        try{
-            $productCategories = ProductCategory::all();
-            return view('product-category.index')
-            ->with('productCategories',$productCategories);
-        }catch (QueryException $e){
-            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('product-category.index')
-            ->withErrors([$message]);
-        }
-
+        $productCategories = ProductCategory::all();
+        return view('product-category.index')
+        ->with('productCategories',$productCategories);
     }
 
      /**
@@ -66,35 +59,25 @@ class ProductCategoryController extends Controller
             $id = $request['id_product_category'];
             if($id == NULL){
                 $productCategory = new ProductCategory();
-    	        $productCategory->clave = $request['clave'];
-    	        $productCategory->description = $request['description'];
-    	        $productCategory->variant = $request['variant'];
-    	        $productCategory->estatus = ($request['estatus'] == "on")?1:0;
                 $message = "Registro Creado";
             }else{
-                $productCategory  = ProductCategory::findOrFail($id);
-                $productCategory->clave = $request['clave'];
-    	        $productCategory->description = $request['description'];
-    	        $productCategory->variant = $request['variant'];
-    	        $productCategory->estatus = ($request['estatus'] == "on")?1:0;
+                $productCategory  = ProductCategory::findOrFail($id);    
                 $message = "Registro Actualizado";
             }
-                $productCategory->save();
+            $productCategory->clave = $request['clave'];
+            $productCategory->description = $request['description'];
+            $productCategory->variant = $request['variant'];
+            $productCategory->estatus = ($request['estatus'] == "on")?1:0;
+            $productCategory->save();
             
             if($request['id_product_category_redirect'] == 'true'){
-                $productCategories = ProductCategory::all();
-                return view('product-category.index')
-                ->with('productCategories',$productCategories)
-                ->withSuccess($message);
+                return redirect('/product-categories')->with('success', $message);
             }else{
                 return ProductCategory::all()->where('estatus',1);
             }
         }catch (QueryException $e){
-            $productCategories = ProductCategory::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('product-category.index')
-            ->with('productCategories',$productCategories)
-            ->withErrors([$message]);
+            return redirect('/product-categories')->with('error', $message);
        }
     }
 
@@ -108,16 +91,10 @@ class ProductCategoryController extends Controller
         try {
             $productCategory = ProductCategory::findOrFail($id);
             $productCategory->delete();
-            $productCategories = ProductCategory::all();
-            return view('product-category.index')
-            ->with('productCategories',$productCategories)
-            ->withSuccess('Registro Borrado');
+            return redirect('/product-categories')->with('success', 'Registro Borrado');
         }catch (QueryException $e){
-            $productCategories = ProductCategory::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('product-category.index')
-            ->with('productCategories',$productCategories)
-            ->withErrors([$message]);
+            return redirect('/product-categories')->with('error', $message);
        }
     }
 
