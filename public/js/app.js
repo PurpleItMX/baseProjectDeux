@@ -12,12 +12,6 @@ $(document).ready(function(){
         hideMenu = true;
     })*/
 
-    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-        console.log('Esto es un dispositivo móvil');
-    }else{
-        console.log('Computadora');
-    }
-
     $("#ChangePassword").click(function(){
         $("#new-password").val("");
         $("#ChangePasswordModal").modal();
