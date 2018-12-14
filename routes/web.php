@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/denied', function () {
+    return view('no-access');
+});
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
