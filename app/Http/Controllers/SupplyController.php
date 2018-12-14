@@ -30,23 +30,17 @@ class SupplyController extends Controller
      */
     public function index()
     {
-        try{
-            $supplies = Supply::all();
-            $supplyCategories = SupplyCategory::all()->where('estatus',1);
-            $seasons = Season::all()->where('estatus',1);
-            $supplyTypes = SupplyType::all()->where('estatus',1);
-            $warehouses = Warehouse::all()->where('estatus',1);
-            return view('supply.index')
-            ->with('supplies',$supplies)
-            ->with('seasons',$seasons)
-            ->with('supplyCategories',$supplyCategories)
-            ->with('warehouses',$warehouses)
-            ->with('supplyTypes',$supplyTypes);
-        }catch (QueryException $e){
-            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('supply.index')
-            ->withErrors([$message]);
-        }
+        $supplies = Supply::all();
+        $supplyCategories = SupplyCategory::all()->where('estatus',1);
+        $seasons = Season::all()->where('estatus',1);
+        $supplyTypes = SupplyType::all()->where('estatus',1);
+        $warehouses = Warehouse::all()->where('estatus',1);
+        return view('supply.index')
+        ->with('supplies',$supplies)
+        ->with('seasons',$seasons)
+        ->with('supplyCategories',$supplyCategories)
+        ->with('warehouses',$warehouses)
+        ->with('supplyTypes',$supplyTypes);
     }
 
      /**
@@ -146,35 +140,13 @@ class SupplyController extends Controller
             }
 
             if($request['id_supply_redirect'] == 'true'){
-                $supplies = Supply::all();
-                $supplyCategories = SupplyCategory::all()->where('estatus',1);
-                $seasons = Season::all()->where('estatus',1);
-                $supplyTypes = SupplyType::all()->where('estatus',1);
-                $warehouses = Warehouse::all()->where('estatus',1);
-                return view('supply.index')
-                ->with('supplies',$supplies)
-                ->with('seasons',$seasons)
-                ->with('supplyCategories',$supplyCategories)
-                ->with('warehouses',$warehouses)
-                ->with('supplyTypes',$supplyTypes)
-                ->withSuccess($message);
+                return redirect('/suppliers')->with('success', $message);
             }else{
                 return Supply::all();
             }
         }catch (QueryException $e){
-            $supplies = Supply::all();
-            $supplyCategories = SupplyCategory::all()->where('estatus',1);
-            $seasons = Season::all()->where('estatus',1);
-            $supplyTypes = SupplyType::all()->where('estatus',1);
-            $warehouses = Warehouse::all()->where('estatus',1);
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('supply.index')
-            ->with('supplies',$supplies)
-            ->with('seasons',$seasons)
-            ->with('supplyCategories',$supplyCategories)
-            ->with('warehouses',$warehouses)
-            ->with('supplyTypes',$supplyTypes)
-            ->withErrors([$message]);
+            return redirect('/suppliers')->with('error', $message);
        }
     }
 
@@ -188,32 +160,10 @@ class SupplyController extends Controller
         try {
             $supply = Supply::findOrFail($id);
             $supply->delete();
-            $supplies = Supply::all();
-            $supplyCategories = SupplyCategory::all()->where('estatus',1);
-            $seasons = Season::all()->where('estatus',1);
-            $supplyTypes = SupplyType::all()->where('estatus',1);
-            $warehouses = Warehouse::all()->where('estatus',1);
-            return view('supply.index')
-            ->with('supplies',$supplies)
-            ->with('seasons',$seasons)
-            ->with('supplyCategories',$supplyCategories)
-            ->with('warehouses',$warehouses)
-            ->with('supplyTypes',$supplyTypes)
-            ->withSuccess('Registro Borrado');
+            return redirect('/suppliers')->with('success', 'Registro Borrado');
         }catch (QueryException $e){
-            $supplies = Supply::all();
-            $supplyCategories = SupplyCategory::all()->where('estatus',1);
-            $seasons = Season::all()->where('estatus',1);
-            $supplyTypes = SupplyType::all()->where('estatus',1);
-            $warehouses = Warehouse::all()->where('estatus',1);
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('supply.index')
-            ->with('supplies',$supplies)
-            ->with('seasons',$seasons)
-            ->with('supplyCategories',$supplyCategories)
-            ->with('warehouses',$warehouses)
-            ->with('supplyTypes',$supplyTypes)
-            ->withErrors([$message]);
+            return redirect('/suppliers')->with('error', $message);
        }
     }
 

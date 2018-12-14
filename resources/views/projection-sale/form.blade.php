@@ -24,7 +24,7 @@
     <div class="col-lg-3 col-xl-3">
       <div class="agrupar-form">
         <p class="text">Fecha ini:</p>
-        <input id="date_end" type="date" class="form-control input-date input-compress" value="">
+        <input id="date_initial" type="date" class="form-control input-date input-compress" value="">
       </div>
       <div class="agrupar-form">
           <p class="text">Fecha fin:</p>

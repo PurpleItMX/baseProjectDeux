@@ -25,15 +25,9 @@ class WarehouseController extends Controller
      */
     public function index()
     {
-        try{
-            $warehouses = Warehouse::all();
-            return view('warehouse.index')
-            ->with('warehouses',$warehouses);
-         }catch (QueryException $e){
-            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('warehouse.index')
-            ->withErrors([$message]);
-       }
+        $warehouses = Warehouse::all();
+        return view('warehouse.index')
+        ->with('warehouses',$warehouses);
     }
 
      /**
@@ -55,8 +49,7 @@ class WarehouseController extends Controller
             return $warehouse;
         }catch (QueryException $e){
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('warehouse.index')
-            ->withErrors([$message]);
+            return redirect('/warehouses')->with('success', $message);
        }
     }
 
@@ -87,19 +80,13 @@ class WarehouseController extends Controller
             }
             $warehouse->save();
             if($request['id_warehouse_redirect'] == 'true'){
-                $warehouses = Warehouse::all();
-                return view('warehouse.index')
-                ->with('warehouses',$warehouses)
-                ->withSuccess($message);
+                return redirect('/warehouses')->with('success', $message);
             }else{
                 return Warehouse::all()->where('estatus',1);
             }
         }catch (QueryException $e){
-            $warehouses = Warehouse::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('warehouse.index')
-            ->with('warehouses',$warehouses)
-            ->withErrors([$message]);
+            return redirect('/warehouses')->with('error', $message);
        }
     }
 
@@ -113,16 +100,10 @@ class WarehouseController extends Controller
         try{
             $warehouse = Warehouse::findOrFail($id);
     	    $warehouse->delete();
-            $warehouses = Warehouse::all();
-            return view('warehouse.index')
-            ->with('warehouses',$warehouses)
-            ->withSuccess('Registro Borrado');
+            return redirect('/warehouses')->with('success', 'Registro Borrado');
         }catch (QueryException $e){
-            $warehouses = Warehouse::all();
-            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('warehouse.index')
-            ->with('warehouses',$warehouses)
-            ->withErrors([$message]);
+           $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return redirect('/warehouses')->with('error', $message);
        }
     }
 

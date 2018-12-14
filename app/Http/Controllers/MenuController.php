@@ -35,12 +35,15 @@ class MenuController extends Controller
     }
 
     public function update($id){
-        return Menu::findOrFail($id);
+        try{
+            return Menu::findOrFail($id);
+        }catch (QueryException $e){
+            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
+            return redirect('/menus')->with('error', $message);
+        }
     }
 
-
-
-        /**
+     /**
      * Action for delete Role
      *
      * @return \Illuminate\Http\Response
@@ -50,21 +53,11 @@ class MenuController extends Controller
         try {
             $menu = Menu::findOrFail($id);
             $menu->delete();
-            $menus = Menu::all();
-            $parents = Menu::all()->where("id_parent", NULL);
-            return view('menu.index')
-            ->with('menus',$menus)
-            ->with('parents',$parents)
-            ->withSuccess('Registro Borrado');
+            return redirect('/menus')->with('success', 'Registro Borrado');
         }catch (QueryException $e){
             DB::rollBack();
-            $menus = Menu::all();
-            $parents = Menu::all()->where("id_parent", NULL);
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('menu.index')
-            ->with('menus',$menus)
-            ->with('parents',$parents)
-            ->withErrors([$message]);
+            return redirect('/menus')->with('error', $message);
        }
     }
 
@@ -92,24 +85,14 @@ class MenuController extends Controller
             DB::commit();
             
             if($request['id_menu_redirect'] == 'true'){
-                $menus = Menu::all();
-                $parents = Menu::all()->where("id_parent", NULL);
-                return view('menu.index')
-                ->with('menus',$menus)
-                ->with('parents',$parents)
-                ->withSuccess($message);
+                return redirect('/menus')->with('success', $message);
             }else{
                 return Menu::all()->where('status',1);
             }
          }catch (QueryException $e){
             DB::rollBack();
-            $menus = Menu::all();
-            $parents = Menu::all()->where("id_parent", NULL);
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('menu.index')
-            ->with('menus',$menus)
-            ->with('parents',$parents)
-            ->withErrors([$message]);
+            return redirect('/menus')->with('error', $message);
        }
 
     }

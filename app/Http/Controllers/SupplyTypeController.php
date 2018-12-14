@@ -26,25 +26,13 @@ class SupplyTypeController extends Controller
      */
     public function index()
     {
-        try{
-            $supplyTypes = SupplyType::all();
-            $supplyCategoriesAll = SupplyCategory::all();
-            $supplyCategories = SupplyCategory::all()->where('estatus',1);
-            return view('supply-type.index')
-            ->with('supplyTypes',$supplyTypes)
-            ->with('supplyCategories',$supplyCategories)
-            ->with('supplyCategoriesAll',$supplyCategoriesAll);
-        }catch (QueryException $e){
-            $supplyTypes = SupplyType::all();
-            $supplyCategoriesAll = SupplyCategory::all();
-            $supplyCategories = SupplyCategory::all()->where('estatus',1);
-            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('supply-type.index')
-            ->with('supplyTypes',$supplyTypes)
-            ->with('supplyCategories',$supplyCategories)
-            ->with('supplyCategoriesAll',$supplyCategoriesAll)
-            ->withErrors([$message]);
-       }
+        $supplyTypes = SupplyType::all();
+        $supplyCategoriesAll = SupplyCategory::all();
+        $supplyCategories = SupplyCategory::all()->where('estatus',1);
+        return view('supply-type.index')
+        ->with('supplyTypes',$supplyTypes)
+        ->with('supplyCategories',$supplyCategories)
+        ->with('supplyCategoriesAll',$supplyCategoriesAll);
     }
 
      /**
@@ -91,27 +79,13 @@ class SupplyTypeController extends Controller
             }
                 $supplyType->save();
             if($request['id_supply_type_redirect'] == 'true'){
-                $supplyCategoriesAll = SupplyCategory::all();
-                $supplyTypes = SupplyType::all();
-                $supplyCategories = SupplyCategory::all()->where('estatus',1);
-                return view('supply-type.index')
-                ->with('supplyTypes',$supplyTypes)
-                ->with('supplyCategories',$supplyCategories)
-                ->with('supplyCategoriesAll',$supplyCategoriesAll)
-                ->withSuccess($message);
+                return redirect('/menus')->with('success', $message);
              }else{
                 return SupplyType::all()->where('estatus',1);
             }
         }catch (QueryException $e){
-            $supplyCategoriesAll = SupplyCategory::all();
-            $supplyTypes = SupplyType::all();
-            $supplyCategories = SupplyCategory::all()->where('estatus',1);
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('supply-type.index')
-            ->with('supplyTypes',$supplyTypes)
-            ->with('supplyCategories',$supplyCategories)
-            ->with('supplyCategoriesAll',$supplyCategoriesAll)
-            ->withErrors([$message]);
+            return redirect('/menus')->with('error', $message);
        }
     }
 
@@ -125,24 +99,10 @@ class SupplyTypeController extends Controller
         try{
             $supplyType = SupplyType::findOrFail($id);
             $supplyType->delete();
-            $supplyTypes = SupplyType::all();
-            $supplyCategoriesAll = SupplyCategory::all();
-            $supplyCategories = SupplyCategory::all()->where('estatus',1);
-            return view('supply-type.index')
-            ->with('supplyTypes',$supplyTypes)
-            ->with('supplyCategories',$supplyCategories)
-            ->with('supplyCategoriesAll',$supplyCategoriesAll)
-            ->withSuccess('Registro Borrado');
+            return redirect('/menus')->with('success', 'Registro Borrado');
         }catch (QueryException $e){
-            $supplyTypes = SupplyType::all();
-            $supplyCategoriesAll = SupplyCategory::all();
-            $supplyCategories = SupplyCategory::all()->where('estatus',1);
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('supply-type.index')
-            ->with('supplyTypes',$supplyTypes)
-            ->with('supplyCategories',$supplyCategories)
-            ->with('supplyCategoriesAll',$supplyCategoriesAll)
-            ->withErrors([$message]);
+            return redirect('/menus')->with('error', $message);
        }
     }
 
