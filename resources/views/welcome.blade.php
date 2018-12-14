@@ -17,6 +17,16 @@
         <!-- style app-->
         <link href="{{ URL::asset('css/datatables.css') }}" rel="stylesheet">
         <link href="{{ URL::asset('css/welcome.css') }}" rel="stylesheet">
+        <style type="text/css" media="screen">
+            body {
+                background-image: url("{{ URL::asset('img/lagavia.png') }}");
+                background-repeat:no-repeat;
+                background-size: cover;
+                background-position: center center;
+                color: white;
+            }    
+        </style>
+        
 
         <!------------------------------ Scripts ---------------------------------->
         <!-- jQuery -->
@@ -26,6 +36,7 @@
         <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
         <script src="{{ URL::asset('js/holder.min.js') }}"></script>
         <script src="{{ URL::asset('js/datatables.min.js') }}"></script>
+        <script src="{{ URL::asset('js/welcome.js') }}"></script>
         <!-- js app -->
     </head>
     <body>
@@ -41,23 +52,14 @@
                             @csrf
                         </form>
                     @else
-                        <a href="#myModalLogin" class="trigger-btn" data-toggle="modal">Acceder</a>
-                        <!--<a href="#myModalRegister" class="trigger-btn" data-toggle="modal">Registro</a>-->
-                        <!--<a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>-->
+                        <!--<button type="button" class="btn btn-sm" data-toggle="modal" data-target="#myModalLogin">Acceso</button>-->
                     @endauth
                 </div>
             @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    {{ config('app.name') }}
-                </div>
-            </div>
         </div>
-
+        
         <!-- Modal Login  -->
-        <div id="myModalLogin" class="modal fade" data-backdrop="static" data-keyboard="false">
+        <div id="myModalLogin" class="modal" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-login">
                 <div class="modal-content">
                     <div class="modal-header">
