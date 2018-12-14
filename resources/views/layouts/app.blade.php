@@ -78,7 +78,7 @@
         @endif
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-            <a href="{{ url('/') }}" class="brand-link">
+            <a href="{{ url('/home') }}" class="brand-link">
                 <img src="{{ URL::asset('img/Logo.jpg')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">{{ config('app.name', 'Laravel') }}</span>
             </a>
@@ -108,19 +108,20 @@
             <section class="content">
               <div class="container-fluid">
                 <main class="py-4">
-                    @if(!empty($success))
-                        <input id="message" value="{{ $success }}" type="hidden"/>
+                    @if(session('success'))
+                        <input id="message" value="{{ session('success') }}" type="hidden"/>
                         <div class="alert alert-success">
-                            <p>{{ $success }}</p>
+                            <p>{{ session('success') }}</p>
                             <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>-->
                         </div>
                     @endif
-                    @if($errors->any())
-                        <input id="message" value="{{ $errors->first()}}" type="hidden"/>
+                    
+                    @if(session('error'))
+                        <input id="message" value="{{ session('error') }}" type="hidden"/>
                         <div class="alert alert-danger">
-                            <p>{{ $errors->first()}}</p>
+                            <p>{{ session('error') }}</p>
                             <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>-->
