@@ -12,7 +12,7 @@
     <li class="nav-item has-treeview">
         <a href="{{ URL::asset($item['url']) }}" class="nav-link">
             <!---cabiar por el icono de la bd---->
-            <i class="nav-icon {{ $item['icono'] }}"></i>
+            <i class="nav-icon fa {{ $item['icono'] }}"></i>
             <p>
                 {{ $item['name'] }}
                 <i class="right fa fa-angle-left"></i>
@@ -24,7 +24,7 @@
                 @if ($submenu['submenu'] == [])
                 <li class="nav-item">
                     <a href="{{ URL::asset($submenu['url']) }}" class="nav-link">
-                      <i class="nav-icon {{ $submenu['icono'] }}"></i>
+                      <i class="nav-icon fa {{ $submenu['icono'] }}"></i>
                       <p>{{ $submenu['name'] }}</p>
                     </a>
                 </li>

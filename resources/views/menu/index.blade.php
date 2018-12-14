@@ -103,7 +103,7 @@
 	        	<div class="form-group col-md-6">
 	            	<div class="form-check">
 	            		<label for="icono">{{ __('Icono:') }}</label>
-	            		<select class="form-control" id="icono" name= "icono"  required>
+	            		<select class="form-control select-menu" id="icono" name= "icono"  required>
 						    <option value="fa-align-left">&#xf036; fa-align-left</option>
 						    <option value="fa-align-right">&#xf038; fa-align-right</option>
 						    <option value="fa-amazon">&#xf270; fa-amazon</option>
