@@ -26,17 +26,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        try{
-            $users = User::all();
-            return view('user.index')
-            ->with('users',$users);
-        }catch (QueryException $e){
-            $users = User::all();
-            $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('user.index')
-            ->with('users',$users)
-            ->withErrors($message);
-       }
+        $users = User::all();
+        return view('user.index')
+        ->with('users',$users);
     }
 
      /**
@@ -62,11 +54,8 @@ class UserController extends Controller
             return view('user.form')
             ->with('user',$user);
         }catch (QueryException $e){
-            $users = User::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('user.index')
-            ->with('users',$users)
-            ->withErrors($message);
+            return redirect('/users')->with('error', $message);
        }
     }
 
@@ -94,16 +83,10 @@ class UserController extends Controller
                 $message = "Registro Actualizado";
             }
             $user->save();
-            $users = User::all();
-            return view('user.index')
-            ->with('users',$users)
-            ->withSuccess($message);
+            return redirect('/users')->with('success', $message);
        }catch (QueryException $e){
-            $users = User::all();
             $message = $e->errorInfo[1] ."-".$e->errorInfo[2];
-            return view('user.index')
-            ->with('users',$users)
-            ->withErrors($message);
+            return redirect('/users')->with('error', $message);
        }
     }
 
